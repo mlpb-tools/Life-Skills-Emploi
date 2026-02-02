@@ -1,0 +1,1679 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Le Travail Mode d'Emploi - Life Skills 4 Youth</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --rouge: #FF1766;
+            --orange: #FF9F1C;
+            --jaune: #FFD166;
+            --vert: #7CB342;
+            --bleu: #2196F3;
+            --turquoise: #4DD4D4;
+            --rose: #FF5C8D;
+            --violet: #8B4789;
+            --blanc: #FFFFFF;
+            --gris-clair: #F8F9FA;
+            --noir: #2C3E50;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--blanc);
+            color: var(--noir);
+            line-height: 1.6;
+        }
+
+        /* Formes décoratives */
+        .bg-shapes {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .shape-circle {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.08;
+            filter: blur(60px);
+        }
+
+        .shape-1 {
+            width: 500px;
+            height: 500px;
+            background: var(--jaune);
+            top: -150px;
+            right: -100px;
+        }
+
+        .shape-2 {
+            width: 400px;
+            height: 400px;
+            background: var(--turquoise);
+            bottom: 200px;
+            left: -100px;
+        }
+
+        .shape-3 {
+            width: 350px;
+            height: 350px;
+            background: var(--rose);
+            top: 40%;
+            right: 10%;
+        }
+
+        /* Grille de points */
+        .dot-grid {
+            position: absolute;
+            display: grid;
+            grid-template-columns: repeat(4, 8px);
+            gap: 10px;
+            opacity: 0.25;
+        }
+
+        .dot-grid span {
+            width: 8px;
+            height: 8px;
+            background: var(--turquoise);
+            border-radius: 50%;
+        }
+
+        .dots-top {
+            top: 100px;
+            right: 60px;
+        }
+
+        .dots-bottom {
+            bottom: 150px;
+            left: 80px;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        .header {
+            padding: 30px 0;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            height: 60px;
+        }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            padding: 80px 20px;
+            position: relative;
+            margin-bottom: 80px;
+        }
+
+        .hero-bg-circle {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: var(--jaune);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.15;
+            z-index: -1;
+        }
+
+        .hero h1 {
+            font-size: 64px;
+            font-weight: 900;
+            color: var(--noir);
+            margin-bottom: 20px;
+            line-height: 1.1;
+            letter-spacing: -1px;
+        }
+
+        .hero .subtitle {
+            font-size: 22px;
+            color: var(--noir);
+            font-weight: 600;
+            opacity: 0.7;
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
+
+        .hero .intro {
+            font-size: 18px;
+            color: var(--noir);
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        /* Bloc section */
+        .bloc {
+            background: var(--blanc);
+            border-radius: 40px;
+            padding: 60px 50px;
+            margin-bottom: 50px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: visible;
+        }
+
+        .bloc-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .bloc-number {
+            display: inline-block;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--rouge), var(--rose));
+            color: var(--blanc);
+            border-radius: 50%;
+            font-size: 36px;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .bloc h2 {
+            font-size: 42px;
+            font-weight: 900;
+            color: var(--noir);
+            margin-bottom: 15px;
+            line-height: 1.2;
+        }
+
+        .bloc .key-message {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--rouge);
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        /* Piliers visuels */
+        .pillars {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .pillar {
+            text-align: center;
+            padding: 30px 20px;
+            background: var(--gris-clair);
+            border-radius: 30px;
+            transition: transform 0.3s ease;
+        }
+
+        .pillar:hover {
+            transform: translateY(-5px);
+        }
+
+        .pillar-icon {
+            font-size: 56px;
+            margin-bottom: 15px;
+        }
+
+        .pillar h3 {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--noir);
+            margin-bottom: 10px;
+        }
+
+        .pillar p {
+            font-size: 15px;
+            color: var(--noir);
+            opacity: 0.7;
+            line-height: 1.6;
+        }
+
+        /* Radar/Bulles */
+        .bubbles-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin: 40px 0;
+        }
+
+        .bubble {
+            background: linear-gradient(135deg, var(--turquoise), var(--bleu));
+            color: var(--blanc);
+            padding: 25px 35px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 700;
+            box-shadow: 0 8px 25px rgba(77, 212, 212, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .bubble:hover {
+            transform: scale(1.05);
+        }
+
+        /* Liste visuelle de valeurs */
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+        }
+
+        .value-item {
+            background: var(--blanc);
+            border: 3px solid var(--vert);
+            border-radius: 25px;
+            padding: 25px 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .value-item:hover {
+            background: var(--vert);
+            color: var(--blanc);
+            transform: scale(1.05);
+        }
+
+        .value-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .value-name {
+            font-size: 17px;
+            font-weight: 700;
+        }
+
+        /* Sources compétences */
+        .sources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+
+        .source-card {
+            background: linear-gradient(135deg, rgba(255, 157, 28, 0.1), rgba(255, 209, 102, 0.15));
+            border-radius: 25px;
+            padding: 30px 20px;
+            text-align: center;
+            border: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .source-card:hover {
+            border-color: var(--orange);
+            transform: translateY(-5px);
+        }
+
+        .source-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .source-label {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--noir);
+        }
+
+        /* Schéma pitch */
+        .pitch-schema {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            margin: 40px 0;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .pitch-element {
+            flex: 1;
+            min-width: 200px;
+            background: var(--gris-clair);
+            border-radius: 30px;
+            padding: 35px 25px;
+            text-align: center;
+        }
+
+        .pitch-element h4 {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--rouge);
+            margin-bottom: 15px;
+        }
+
+        .pitch-element p {
+            font-size: 15px;
+            color: var(--noir);
+            opacity: 0.8;
+        }
+
+        .arrow {
+            font-size: 32px;
+            color: var(--turquoise);
+            font-weight: 900;
+        }
+
+        /* Signaux visuels */
+        .signals {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .signal-item {
+            background: linear-gradient(135deg, rgba(255, 23, 102, 0.1), rgba(255, 92, 141, 0.15));
+            border-radius: 20px;
+            padding: 25px 20px;
+            text-align: center;
+            border-left: 5px solid var(--rouge);
+        }
+
+        .signal-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .signal-label {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--noir);
+        }
+
+        /* Solutions */
+        .solutions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .solution-card {
+            background: linear-gradient(135deg, rgba(124, 179, 66, 0.1), rgba(139, 195, 74, 0.15));
+            border-radius: 25px;
+            padding: 30px 25px;
+            text-align: center;
+            border: 3px solid var(--vert);
+        }
+
+        .solution-icon {
+            font-size: 44px;
+            margin-bottom: 15px;
+        }
+
+        .solution-text {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--noir);
+        }
+
+        /* Checklist */
+        .checklist {
+            background: var(--gris-clair);
+            border-radius: 25px;
+            padding: 35px;
+            margin: 30px 0;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 20px 0;
+            border-bottom: 2px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .checklist-item:last-child {
+            border-bottom: none;
+        }
+
+        .checkbox {
+            width: 32px;
+            height: 32px;
+            border: 3px solid var(--turquoise);
+            border-radius: 8px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--blanc);
+        }
+
+        .checkbox::after {
+            content: '✓';
+            color: var(--turquoise);
+            font-weight: 900;
+            font-size: 20px;
+        }
+
+        .checklist-text {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--noir);
+        }
+
+        /* Tri ABC */
+        .priority-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .priority-card {
+            border-radius: 30px;
+            padding: 40px 30px;
+            text-align: center;
+            border: 4px solid;
+        }
+
+        .priority-a {
+            background: linear-gradient(135deg, rgba(255, 23, 102, 0.1), rgba(255, 92, 141, 0.15));
+            border-color: var(--rouge);
+        }
+
+        .priority-b {
+            background: linear-gradient(135deg, rgba(255, 159, 28, 0.1), rgba(255, 209, 102, 0.15));
+            border-color: var(--orange);
+        }
+
+        .priority-c {
+            background: linear-gradient(135deg, rgba(124, 179, 66, 0.1), rgba(139, 195, 74, 0.15));
+            border-color: var(--vert);
+        }
+
+        .priority-icon {
+            font-size: 56px;
+            margin-bottom: 20px;
+        }
+
+        .priority-label {
+            font-size: 24px;
+            font-weight: 900;
+            margin-bottom: 15px;
+        }
+
+        .priority-desc {
+            font-size: 15px;
+            font-weight: 600;
+            opacity: 0.8;
+        }
+
+        /* Puzzle décoratif */
+        .puzzle-deco {
+            position: absolute;
+            bottom: -20px;
+            left: -20px;
+            width: 120px;
+            height: 120px;
+            opacity: 0.12;
+            z-index: -1;
+        }
+
+        .puzzle-piece {
+            width: 55px;
+            height: 55px;
+            position: absolute;
+            border-radius: 10px;
+        }
+
+        .piece-1 {
+            background: var(--turquoise);
+            top: 0;
+            left: 0;
+            transform: rotate(-12deg);
+        }
+
+        .piece-2 {
+            background: var(--rouge);
+            top: 0;
+            right: 0;
+            border-radius: 50% 10px 10px 10px;
+        }
+
+        .piece-3 {
+            background: var(--jaune);
+            bottom: 0;
+            left: 0;
+        }
+
+        .piece-4 {
+            background: var(--rose);
+            bottom: 0;
+            right: 0;
+            transform: rotate(12deg);
+        }
+
+        /* Boutons */
+        .btn {
+            display: inline-block;
+            padding: 20px 50px;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .btn-primary {
+            background: var(--rouge);
+            color: var(--blanc);
+            box-shadow: 0 10px 35px rgba(255, 23, 102, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 45px rgba(255, 23, 102, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--blanc);
+            color: var(--turquoise);
+            border: 3px solid var(--turquoise);
+        }
+
+        .btn-secondary:hover {
+            background: var(--turquoise);
+            color: var(--blanc);
+        }
+
+        /* CTA final */
+        .cta-final {
+            text-align: center;
+            padding: 80px 20px;
+            margin: 80px 0 40px;
+        }
+
+        .cta-final h2 {
+            font-size: 48px;
+            font-weight: 900;
+            color: var(--noir);
+            margin-bottom: 25px;
+        }
+
+        .cta-final p {
+            font-size: 20px;
+            color: var(--noir);
+            opacity: 0.7;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 40px;
+            }
+
+            .bloc {
+                padding: 40px 25px;
+            }
+
+            .bloc h2 {
+                font-size: 32px;
+            }
+
+            .pillars,
+            .values-grid,
+            .sources-grid,
+            .priority-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pitch-schema {
+                flex-direction: column;
+            }
+
+            .arrow {
+                transform: rotate(90deg);
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .bloc {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        /* Confettis */
+        .confetti {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            opacity: 0.3;
+        }
+
+        .conf-1 { background: var(--turquoise); top: 80px; right: 100px; }
+        .conf-2 { background: var(--rose); top: 200px; right: 50px; }
+        .conf-3 { background: var(--jaune); bottom: 150px; left: 80px; }
+        .conf-4 { background: var(--orange); bottom: 250px; left: 120px; }
+    </style>
+</head>
+<body>
+    <!-- Formes décoratives arrière-plan -->
+    <div class="bg-shapes">
+        <div class="shape-circle shape-1"></div>
+        <div class="shape-circle shape-2"></div>
+        <div class="shape-circle shape-3"></div>
+        
+        <div class="dot-grid dots-top">
+            <span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span>
+        </div>
+        
+        <div class="dot-grid dots-bottom">
+            <span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span>
+        </div>
+
+        <div class="confetti conf-1"></div>
+        <div class="confetti conf-2"></div>
+        <div class="confetti conf-3"></div>
+        <div class="confetti conf-4"></div>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <img src="https://www.lifeskills4youth.eu/wp-content/uploads/2024/07/LS4YOU_Logo.png" alt="Life Skills 4 Youth" class="logo">
+        </div>
+
+        <!-- Hero -->
+        <div class="hero">
+            <div class="hero-bg-circle"></div>
+            <h1>Le Travail<br>Mode d'Emploi</h1>
+            <p class="subtitle">Comprendre le rapport au travail pour mieux s'orienter</p>
+            <p class="intro">
+                Cette infographie t'aide à comprendre <strong>pourquoi on travaille</strong>, 
+                <strong>comment tu fonctionnes</strong> face au travail, et <strong>comment tenir dans la durée</strong>. 
+                C'est simple, concret, et ça t'aidera à faire les bons choix.
+            </p>
+        </div>
+
+        <!-- 5 étapes de la mission emploi -->
+        <div class="bloc" style="background: linear-gradient(135deg, rgba(77, 212, 212, 0.05), rgba(255, 209, 102, 0.05));">
+            <div class="bloc-header">
+                <h2 style="color: var(--rouge);">Ta Mission Emploi en 5 Étapes</h2>
+                <p style="font-size: 18px; opacity: 0.8; max-width: 800px; margin: 0 auto;">
+                    Cette infographie est un guide rapide pour t'aider à structurer ta recherche d'emploi. 
+                    Suis ces 5 pièces du puzzle pour construire un projet professionnel qui te correspond 
+                    vraiment et te donner toutes les chances de réussir.
+                </p>
+            </div>
+
+            <div style="display: grid; gap: 30px; margin-top: 50px;">
+                <!-- Étape 1 -->
+                <div style="background: var(--blanc); border-radius: 30px; padding: 35px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); display: flex; align-items: center; gap: 30px; border-left: 6px solid var(--rouge);">
+                    <div style="flex-shrink: 0; width: 80px; height: 80px; background: linear-gradient(135deg, var(--rouge), var(--rose)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 900; color: var(--blanc);">1</div>
+                    <div style="flex: 1;">
+                        <h3 style="font-size: 26px; font-weight: 800; color: var(--rouge); margin-bottom: 10px;">Connais-toi</h3>
+                        <p style="font-size: 16px; line-height: 1.7; opacity: 0.9;">Analyse tes motivations réelles pour travailler et les freins qui peuvent te bloquer.</p>
+                    </div>
+                </div>
+
+                <!-- Étape 2 -->
+                <div style="background: var(--blanc); border-radius: 30px; padding: 35px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); display: flex; align-items: center; gap: 30px; border-left: 6px solid var(--orange);">
+                    <div style="flex-shrink: 0; width: 80px; height: 80px; background: linear-gradient(135deg, var(--orange), var(--jaune)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 900; color: var(--blanc);">2</div>
+                    <div style="flex: 1;">
+                        <h3 style="font-size: 26px; font-weight: 800; color: var(--orange); margin-bottom: 10px;">Pose tes limites</h3>
+                        <p style="font-size: 16px; line-height: 1.7; opacity: 0.9;">Définis les conditions de travail acceptables et celles qui sont non-négociables pour toi.</p>
+                    </div>
+                </div>
+
+                <!-- Étape 3 -->
+                <div style="background: var(--blanc); border-radius: 30px; padding: 35px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); display: flex; align-items: center; gap: 30px; border-left: 6px solid var(--vert);">
+                    <div style="flex-shrink: 0; width: 80px; height: 80px; background: linear-gradient(135deg, var(--vert), #8BC34A); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 900; color: var(--blanc);">3</div>
+                    <div style="flex: 1;">
+                        <h3 style="font-size: 26px; font-weight: 800; color: var(--vert); margin-bottom: 10px;">Valorise tes atouts</h3>
+                        <p style="font-size: 16px; line-height: 1.7; opacity: 0.9;">Transforme tes expériences en compétences concrètes avec la méthode STAR.</p>
+                    </div>
+                </div>
+
+                <!-- Étape 4 -->
+                <div style="background: var(--blanc); border-radius: 30px; padding: 35px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); display: flex; align-items: center; gap: 30px; border-left: 6px solid var(--turquoise);">
+                    <div style="flex-shrink: 0; width: 80px; height: 80px; background: linear-gradient(135deg, var(--turquoise), var(--bleu)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 900; color: var(--blanc);">4</div>
+                    <div style="flex: 1;">
+                        <h3 style="font-size: 26px; font-weight: 800; color: var(--turquoise); margin-bottom: 10px;">Prépare ton pitch</h3>
+                        <p style="font-size: 16px; line-height: 1.7; opacity: 0.9;">Entraîne-toi à te présenter et à répondre aux questions en entretien.</p>
+                    </div>
+                </div>
+
+                <!-- Étape 5 -->
+                <div style="background: var(--blanc); border-radius: 30px; padding: 35px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); display: flex; align-items: center; gap: 30px; border-left: 6px solid var(--violet);">
+                    <div style="flex-shrink: 0; width: 80px; height: 80px; background: linear-gradient(135deg, var(--violet), #9C27B0); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 900; color: var(--blanc);">5</div>
+                    <div style="flex: 1;">
+                        <h3 style="font-size: 26px; font-weight: 800; color: var(--violet); margin-bottom: 10px;">Passe à l'action</h3>
+                        <p style="font-size: 16px; line-height: 1.7; opacity: 0.9;">Fixe-toi des objectifs clairs et priorise tes démarches pour être plus efficace.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BLOC 1 : Pourquoi on travaille -->
+        <div class="bloc">
+            <div class="puzzle-deco">
+                <div class="puzzle-piece piece-1"></div>
+                <div class="puzzle-piece piece-2"></div>
+                <div class="puzzle-piece piece-3"></div>
+                <div class="puzzle-piece piece-4"></div>
+            </div>
+            
+            <div class="bloc-header">
+                <div class="bloc-number">1</div>
+                <h2>Pourquoi on travaille ?</h2>
+            </div>
+
+            <div class="pillars">
+                <div class="pillar">
+                    <div class="pillar-icon">💰</div>
+                    <h3>Argent</h3>
+                    <p>Gagner de l'argent pour vivre, se loger, manger, sortir. C'est la base.</p>
+                </div>
+
+                <div class="pillar">
+                    <div class="pillar-icon">🧭</div>
+                    <h3>Autonomie</h3>
+                    <p>Ne plus dépendre de personne. Choisir sa vie, ses projets.</p>
+                </div>
+
+                <div class="pillar">
+                    <div class="pillar-icon">⭐</div>
+                    <h3>Reconnaissance</h3>
+                    <p>Se sentir utile, valorisé. Trouver sa place dans la société.</p>
+                </div>
+
+                <div class="pillar">
+                    <div class="pillar-icon">🚀</div>
+                    <h3>Projet de vie</h3>
+                    <p>Construire quelque chose, avancer vers un objectif qui compte pour toi.</p>
+                </div>
+            </div>
+
+            <p class="key-message">👉 Travailler sert à plusieurs choses en même temps.</p>
+        </div>
+
+        <!-- BLOC 2 : Comment je fonctionne -->
+        <div class="bloc">
+            <div class="bloc-header">
+                <div class="bloc-number">2</div>
+                <h2>Comment je fonctionne face au travail ?</h2>
+            </div>
+
+            <p style="text-align: center; font-size: 18px; margin-bottom: 30px; opacity: 0.8;">
+                Chacun réagit différemment. Mieux te connaître t'aide à éviter les mauvais choix.
+            </p>
+
+            <div class="bubbles-container">
+                <div class="bubble">💪 Ma motivation</div>
+                <div class="bubble">🚧 Mes freins</div>
+                <div class="bubble">⚡ Réaction sous pression</div>
+                <div class="bubble">📋 Rapport au cadre</div>
+                <div class="bubble">👤 Rapport à l'autorité</div>
+            </div>
+
+            <div style="background: linear-gradient(135deg, rgba(77, 212, 212, 0.1), rgba(33, 150, 243, 0.1)); border-radius: 25px; padding: 30px; margin-top: 40px;">
+                <h3 style="font-size: 20px; font-weight: 800; margin-bottom: 15px; color: var(--noir);">
+                    Exemples concrets :
+                </h3>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="padding: 10px 0; padding-left: 30px; position: relative;">
+                        <span style="position: absolute; left: 0; color: var(--turquoise); font-weight: 900;">→</span>
+                        Tu supportes mal qu'on te dise quoi faire ? → Évite les postes trop hiérarchiques
+                    </li>
+                    <li style="padding: 10px 0; padding-left: 30px; position: relative;">
+                        <span style="position: absolute; left: 0; color: var(--turquoise); font-weight: 900;">→</span>
+                        Tu as besoin de liberté ? → Vise des métiers créatifs ou en autonomie
+                    </li>
+                    <li style="padding: 10px 0; padding-left: 30px; position: relative;">
+                        <span style="position: absolute; left: 0; color: var(--turquoise); font-weight: 900;">→</span>
+                        Tu stress facilement ? → Cherche un cadre rassurant avec du soutien
+                    </li>
+                </ul>
+            </div>
+
+            <p class="key-message">👉 Se connaître évite les mauvais choix.</p>
+
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="https://mlpb-tools.github.io/16perso/" target="_blank" class="btn btn-primary">
+                    🧠 Faire le test des 16 personnalités
+                </a>
+                <p style="margin-top: 15px; font-size: 14px; opacity: 0.7;">
+                    Découvre ton profil et les métiers qui te correspondent
+                </p>
+            </div>
+        </div>
+
+        <!-- BLOC 3 : Mes valeurs -->
+        <div class="bloc">
+            <div class="bloc-header">
+                <div class="bloc-number">3</div>
+                <h2>Mes valeurs au travail</h2>
+            </div>
+
+            <p style="text-align: center; font-size: 18px; margin-bottom: 30px; opacity: 0.8;">
+                Qu'est-ce qui compte vraiment pour toi dans un job ? Identifie tes priorités.
+            </p>
+
+            <div class="values-grid">
+                <div class="value-item">
+                    <div class="value-icon">🤝</div>
+                    <div class="value-name">Respect</div>
+                </div>
+
+                <div class="value-item">
+                    <div class="value-icon">😊</div>
+                    <div class="value-name">Ambiance</div>
+                </div>
+
+                <div class="value-item">
+                    <div class="value-icon">🛡️</div>
+                    <div class="value-name">Sécurité</div>
+                </div>
+
+                <div class="value-item">
+                    <div class="value-icon">🕊️</div>
+                    <div class="value-name">Liberté</div>
+                </div>
+
+                <div class="value-item">
+                    <div class="value-icon">💫</div>
+                    <div class="value-name">Utilité</div>
+                </div>
+
+                <div class="value-item">
+                    <div class="value-icon">⚖️</div>
+                    <div class="value-name">Justice</div>
+                </div>
+
+                <div class="value-item">
+                    <div class="value-icon">🎨</div>
+                    <div class="value-name">Créativité</div>
+                </div>
+            </div>
+
+            <div style="background: linear-gradient(135deg, rgba(124, 179, 66, 0.1), rgba(139, 195, 74, 0.15)); border-radius: 25px; padding: 30px; margin-top: 30px;">
+                <h3 style="font-size: 20px; font-weight: 800; margin-bottom: 15px; color: var(--noir);">
+                    Pourquoi c'est important ?
+                </h3>
+                <p style="font-size: 16px; line-height: 1.8; opacity: 0.9;">
+                    Un travail aligné avec tes valeurs = tu tiens plus longtemps, tu es moins stressé, 
+                    tu te sens mieux. À l'inverse, si tes valeurs sont piétinées au quotidien, 
+                    tu vas vite vouloir partir, même si le salaire est bon.
+                </p>
+            </div>
+
+            <p class="key-message">👉 Un travail aligné avec mes valeurs = plus de stabilité.</p>
+
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="https://mlpb-tools.github.io/mes-valeurs/" target="_blank" class="btn btn-primary">
+                    ⭐ Identifier mes valeurs
+                </a>
+                <p style="margin-top: 15px; font-size: 14px; opacity: 0.7;">
+                    Activité interactive pour clarifier ce qui compte vraiment pour toi
+                </p>
+            </div>
+        </div>
+
+        <!-- BLOC 4 : Mes compétences -->
+        <div class="bloc">
+            <div class="bloc-header">
+                <div class="bloc-number">4</div>
+                <h2>Mes compétences existent déjà</h2>
+            </div>
+
+            <p style="text-align: center; font-size: 18px; margin-bottom: 30px; opacity: 0.8;">
+                Tu penses n'avoir aucune compétence ? Faux. Regarde partout autour de toi.
+            </p>
+
+            <div class="sources-grid">
+                <div class="source-card">
+                    <div class="source-icon">🏠</div>
+                    <div class="source-label">Vie perso</div>
+                </div>
+
+                <div class="source-card">
+                    <div class="source-icon">🎮</div>
+                    <div class="source-label">Loisirs</div>
+                </div>
+
+                <div class="source-card">
+                    <div class="source-icon">💼</div>
+                    <div class="source-label">Jobs courts</div>
+                </div>
+
+                <div class="source-card">
+                    <div class="source-icon">💪</div>
+                    <div class="source-label">Galères surmontées</div>
+                </div>
+
+                <div class="source-card">
+                    <div class="source-icon">🤲</div>
+                    <div class="source-label">Bénévolat</div>
+                </div>
+            </div>
+
+            <div style="background: linear-gradient(135deg, rgba(255, 159, 28, 0.1), rgba(255, 209, 102, 0.15)); border-radius: 25px; padding: 30px; margin-top: 30px;">
+                <h3 style="font-size: 20px; font-weight: 800; margin-bottom: 15px; color: var(--noir);">
+                    Exemples de compétences cachées :
+                </h3>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="padding: 10px 0; padding-left: 30px; position: relative;">
+                        <span style="position: absolute; left: 0; color: var(--orange); font-weight: 900;">✓</span>
+                        Tu t'occupes de tes frères/sœurs ? → Responsabilité, patience, organisation
+                    </li>
+                    <li style="padding: 10px 0; padding-left: 30px; position: relative;">
+                        <span style="position: absolute; left: 0; color: var(--orange); font-weight: 900;">✓</span>
+                        Tu gères tes courses/budget ? → Gestion, anticipation, autonomie
+                    </li>
+                    <li style="padding: 10px 0; padding-left: 30px; position: relative;">
+                        <span style="position: absolute; left: 0; color: var(--orange); font-weight: 900;">✓</span>
+                        Tu as fait du sport en équipe ? → Coopération, persévérance
+                    </li>
+                    <li style="padding: 10px 0; padding-left: 30px; position: relative;">
+                        <span style="position: absolute; left: 0; color: var(--orange); font-weight: 900;">✓</span>
+                        Tu as surmonté des coups durs ? → Résilience, débrouillardise
+                    </li>
+                    <li style="padding: 10px 0; padding-left: 30px; position: relative;">
+                        <span style="position: absolute; left: 0; color: var(--orange); font-weight: 900;">✓</span>
+                        Tu crées du contenu (vidéos, dessin, musique) ? → Créativité, technique
+                    </li>
+                </ul>
+            </div>
+
+            <p class="key-message">👉 Tout peut devenir compétence.</p>
+
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="https://mlpb-tools.github.io/mes-competences/" target="_blank" class="btn btn-primary">
+                    🎯 Identifier mes compétences
+                </a>
+                <p style="margin-top: 15px; font-size: 14px; opacity: 0.7;">
+                    Transforme tes expériences en compétences valorisables
+                </p>
+            </div>
+        </div>
+
+        <!-- BLOC 5 : Me rendre lisible -->
+        <div class="bloc">
+            <div class="bloc-header">
+                <div class="bloc-number">5</div>
+                <h2>Me rendre lisible pour un employeur</h2>
+            </div>
+
+            <p style="text-align: center; font-size: 18px; margin-bottom: 40px; opacity: 0.8;">
+                Un employeur doit te comprendre en 30 secondes. Voici comment structurer ton pitch.
+            </p>
+
+            <div class="pitch-schema">
+                <div class="pitch-element">
+                    <h4>Qui je suis</h4>
+                    <p>Ton profil en 1 phrase : âge, parcours, situation actuelle</p>
+                </div>
+
+                <div class="arrow">→</div>
+
+                <div class="pitch-element">
+                    <h4>Ce que je sais faire</h4>
+                    <p>2-3 compétences concrètes avec exemples</p>
+                </div>
+
+                <div class="arrow">→</div>
+
+                <div class="pitch-element">
+                    <h4>Ce que je cherche</h4>
+                    <p>Type de poste, secteur, conditions importantes pour toi</p>
+                </div>
+            </div>
+
+            <div style="background: linear-gradient(135deg, rgba(255, 23, 102, 0.1), rgba(255, 92, 141, 0.15)); border-radius: 25px; padding: 30px; margin-top: 40px;">
+                <h3 style="font-size: 20px; font-weight: 800; margin-bottom: 15px; color: var(--noir);">
+                    Exemple de pitch :
+                </h3>
+                <p style="font-size: 17px; line-height: 1.8; font-style: italic; color: var(--noir);">
+                    "J'ai 21 ans, j'ai fait un CAP cuisine mais j'ai arrêté car l'ambiance ne me convenait pas. 
+                    Je sais travailler en équipe, je suis débrouillard et j'apprends vite. 
+                    Je cherche un poste en logistique ou en préparation, avec des horaires réguliers et une bonne ambiance."
+                </p>
+            </div>
+
+            <p class="key-message">👉 Être clair vaut mieux qu'être parfait.</p>
+
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="https://mlpb-tools.github.io/pitch-star/" target="_blank" class="btn btn-primary">
+                    🎤 Construire mon pitch STAR
+                </a>
+                <p style="margin-top: 15px; font-size: 14px; opacity: 0.7;">
+                    Méthode guidée pour te présenter efficacement
+                </p>
+            </div>
+        </div>
+
+        <!-- BLOC 6 : Tenir dans la recherche -->
+        <div class="bloc">
+            <div class="bloc-header">
+                <div class="bloc-number">6</div>
+                <h2>Tenir dans la recherche</h2>
+            </div>
+
+            <p style="text-align: center; font-size: 18px; margin-bottom: 30px; opacity: 0.8;">
+                Chercher un job, c'est éprouvant. Voici les signaux d'alerte et les solutions.
+            </p>
+
+            <h3 style="font-size: 24px; font-weight: 800; margin: 40px 0 20px; color: var(--rouge);">
+                ⚠️ Signaux d'alerte
+            </h3>
+
+            <div class="signals">
+                <div class="signal-item">
+                    <div class="signal-icon">😴</div>
+                    <div class="signal-label">Fatigue</div>
+                </div>
+
+                <div class="signal-item">
+                    <div class="signal-icon">😞</div>
+                    <div class="signal-label">Découragement</div>
+                </div>
+
+                <div class="signal-item">
+                    <div class="signal-icon">😰</div>
+                    <div class="signal-label">Stress</div>
+                </div>
+
+                <div class="signal-item">
+                    <div class="signal-icon">🏝️</div>
+                    <div class="signal-label">Isolement</div>
+                </div>
+            </div>
+
+            <h3 style="font-size: 24px; font-weight: 800; margin: 40px 0 20px; color: var(--vert);">
+                ✅ Solutions simples
+            </h3>
+
+            <div class="solutions">
+                <div class="solution-card">
+                    <div class="solution-icon">🤝</div>
+                    <div class="solution-text">Demander de l'aide</div>
+                </div>
+
+                <div class="solution-card">
+                    <div class="solution-icon">⏱️</div>
+                    <div class="solution-text">Rythme réaliste</div>
+                </div>
+
+                <div class="solution-card">
+                    <div class="solution-icon">☕</div>
+                    <div class="solution-text">Prendre des pauses</div>
+                </div>
+
+                <div class="solution-card">
+                    <div class="solution-icon">🎯</div>
+                    <div class="solution-text">Accompagnement pro</div>
+                </div>
+            </div>
+
+            <div style="background: linear-gradient(135deg, rgba(124, 179, 66, 0.1), rgba(139, 195, 74, 0.15)); border-radius: 25px; padding: 30px; margin-top: 40px;">
+                <h3 style="font-size: 20px; font-weight: 800; margin-bottom: 15px; color: var(--noir);">
+                    Conseils pratiques :
+                </h3>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="padding: 10px 0; padding-left: 30px; position: relative;">
+                        <span style="position: absolute; left: 0; color: var(--vert); font-weight: 900;">→</span>
+                        Fixe-toi un nombre de candidatures par semaine (pas par jour = trop de pression)
+                    </li>
+                    <li style="padding: 10px 0; padding-left: 30px; position: relative;">
+                        <span style="position: absolute; left: 0; color: var(--vert); font-weight: 900;">→</span>
+                        Garde des moments pour toi (sport, amis, loisirs)
+                    </li>
+                    <li style="padding: 10px 0; padding-left: 30px; position: relative;">
+                        <span style="position: absolute; left: 0; color: var(--vert); font-weight: 900;">→</span>
+                        Parle à ton conseiller Mission Locale si ça devient trop lourd
+                    </li>
+                    <li style="padding: 10px 0; padding-left: 30px; position: relative;">
+                        <span style="position: absolute; left: 0; color: var(--vert); font-weight: 900;">→</span>
+                        Célèbre chaque petite victoire (entretien obtenu, réponse positive, même refus poli)
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- JEU DE L'ÉNERGIE -->
+        <div class="bloc" style="background: linear-gradient(135deg, rgba(124, 179, 66, 0.08), rgba(255, 209, 102, 0.08));">
+            <div class="bloc-header">
+                <div class="bloc-number">🎮</div>
+                <h2>Le Jeu de l'Énergie</h2>
+                <p style="font-size: 18px; opacity: 0.8;">
+                    Apprends à gérer ton énergie quotidienne de manière ludique et interactive.
+                </p>
+            </div>
+
+            <div style="background: var(--blanc); border-radius: 30px; padding: 40px; margin: 30px 0; text-align: center;">
+                <div style="font-size: 80px; margin-bottom: 20px;">⚡</div>
+                
+                <h3 style="font-size: 28px; font-weight: 800; color: var(--noir); margin-bottom: 20px;">
+                    Comprends ta balance énergétique
+                </h3>
+                
+                <p style="font-size: 17px; line-height: 1.8; max-width: 700px; margin: 0 auto 30px; color: var(--gris-texte);">
+                    Ce jeu interactif t'aide à identifier ce qui te donne de l'énergie et ce qui t'en prend. 
+                    En jouant, tu vas apprendre à mieux équilibrer ton quotidien pour tenir sur la durée.
+                </p>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin: 40px 0;">
+                    <div style="background: linear-gradient(135deg, rgba(124, 179, 66, 0.1), rgba(139, 195, 74, 0.15)); border-radius: 20px; padding: 25px;">
+                        <div style="font-size: 40px; margin-bottom: 10px;">🌱</div>
+                        <h4 style="font-size: 16px; font-weight: 700; color: var(--vert);">Tes Ressources</h4>
+                        <p style="font-size: 14px; margin-top: 8px; opacity: 0.8;">Ce qui recharge tes batteries</p>
+                    </div>
+
+                    <div style="background: linear-gradient(135deg, rgba(255, 23, 102, 0.1), rgba(255, 92, 141, 0.15)); border-radius: 20px; padding: 25px;">
+                        <div style="font-size: 40px; margin-bottom: 10px;">⚠️</div>
+                        <h4 style="font-size: 16px; font-weight: 700; color: var(--rouge);">Tes Stresseurs</h4>
+                        <p style="font-size: 14px; margin-top: 8px; opacity: 0.8;">Ce qui vide ton réservoir</p>
+                    </div>
+
+                    <div style="background: linear-gradient(135deg, rgba(77, 212, 212, 0.1), rgba(33, 150, 243, 0.15)); border-radius: 20px; padding: 25px;">
+                        <div style="font-size: 40px; margin-bottom: 10px;">📊</div>
+                        <h4 style="font-size: 16px; font-weight: 700; color: var(--turquoise);">Ton Équilibre</h4>
+                        <p style="font-size: 14px; margin-top: 8px; opacity: 0.8;">Visualise ta jauge d'énergie</p>
+                    </div>
+                </div>
+
+                <div style="background: linear-gradient(135deg, rgba(255, 159, 28, 0.1), rgba(255, 209, 102, 0.15)); border-radius: 20px; padding: 30px; margin: 30px 0; text-align: left;">
+                    <h4 style="font-size: 20px; font-weight: 800; color: var(--orange); margin-bottom: 15px;">
+                        💡 Pourquoi c'est important ?
+                    </h4>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="padding: 8px 0 8px 30px; position: relative; line-height: 1.7;">
+                            <span style="position: absolute; left: 0; color: var(--orange); font-weight: 900;">→</span>
+                            Tenir dans la recherche d'emploi, c'est un marathon, pas un sprint
+                        </li>
+                        <li style="padding: 8px 0 8px 30px; position: relative; line-height: 1.7;">
+                            <span style="position: absolute; left: 0; color: var(--orange); font-weight: 900;">→</span>
+                            Si tu ne gères pas ton énergie, tu risques le burn-out ou l'abandon
+                        </li>
+                        <li style="padding: 8px 0 8px 30px; position: relative; line-height: 1.7;">
+                            <span style="position: absolute; left: 0; color: var(--orange); font-weight: 900;">→</span>
+                            Identifier tes ressources te permet de les activer quand tu en as besoin
+                        </li>
+                        <li style="padding: 8px 0 8px 30px; position: relative; line-height: 1.7;">
+                            <span style="position: absolute; left: 0; color: var(--orange); font-weight: 900;">→</span>
+                            Connaître tes stresseurs t'aide à les anticiper ou les limiter
+                        </li>
+                    </ul>
+                </div>
+
+                <a href="https://mlpb-tools.github.io/Energie/" target="_blank" class="btn btn-primary" style="font-size: 20px; padding: 22px 55px;">
+                    🎮 Lancer le jeu de l'Énergie
+                </a>
+            </div>
+        </div>
+
+        <!-- BLOC SANTÉ ET BIEN-ÊTRE : Le jeu de l'énergie -->
+        <div class="bloc" style="background: linear-gradient(135deg, rgba(139, 71, 137, 0.05), rgba(255, 92, 141, 0.05));">
+            <div class="bloc-header">
+                <div class="bloc-number">💚</div>
+                <h2>Mon Plan d'Action Santé & Bien-être</h2>
+                <p style="font-size: 18px; opacity: 0.8;">
+                    Tenir dans la recherche, c'est aussi prendre soin de toi. Voici comment gérer ton énergie.
+                </p>
+            </div>
+
+            <h3 style="font-size: 28px; font-weight: 800; color: var(--violet); margin: 40px 0 20px; text-align: center;">
+                Étape 1 : Faire le point sur ma situation
+            </h3>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 25px; margin: 30px 0;">
+                <div style="background: linear-gradient(135deg, rgba(33, 150, 243, 0.1), rgba(77, 212, 212, 0.15)); border-radius: 25px; padding: 30px; text-align: center; border: 3px solid var(--bleu);">
+                    <div style="font-size: 48px; margin-bottom: 15px;">🧠</div>
+                    <h4 style="font-size: 18px; font-weight: 800; color: var(--noir); margin-bottom: 10px;">Physique</h4>
+                    <p style="font-size: 14px; opacity: 0.8;">Fatigue, douleurs, troubles du sommeil</p>
+                </div>
+
+                <div style="background: linear-gradient(135deg, rgba(255, 92, 141, 0.1), rgba(255, 23, 102, 0.15)); border-radius: 25px; padding: 30px; text-align: center; border: 3px solid var(--rose);">
+                    <div style="font-size: 48px; margin-bottom: 15px;">😊</div>
+                    <h4 style="font-size: 18px; font-weight: 800; color: var(--noir); margin-bottom: 10px;">Émotionnel</h4>
+                    <p style="font-size: 14px; opacity: 0.8;">Tristesse, irritabilité, anxiété</p>
+                </div>
+
+                <div style="background: linear-gradient(135deg, rgba(255, 159, 28, 0.1), rgba(255, 209, 102, 0.15)); border-radius: 25px; padding: 30px; text-align: center; border: 3px solid var(--orange);">
+                    <div style="font-size: 48px; margin-bottom: 15px;">🚶</div>
+                    <h4 style="font-size: 18px; font-weight: 800; color: var(--noir); margin-bottom: 10px;">Comportemental</h4>
+                    <p style="font-size: 14px; opacity: 0.8;">Isolement, procrastination</p>
+                </div>
+
+                <div style="background: linear-gradient(135deg, rgba(124, 179, 66, 0.1), rgba(139, 195, 74, 0.15)); border-radius: 25px; padding: 30px; text-align: center; border: 3px solid var(--vert);">
+                    <div style="font-size: 48px; margin-bottom: 15px;">💭</div>
+                    <h4 style="font-size: 18px; font-weight: 800; color: var(--noir); margin-bottom: 10px;">Cognitif</h4>
+                    <p style="font-size: 14px; opacity: 0.8;">Difficulté de concentration, pensées négatives</p>
+                </div>
+            </div>
+
+            <div style="background: linear-gradient(135deg, rgba(255, 23, 102, 0.1), rgba(255, 92, 141, 0.15)); border-radius: 25px; padding: 25px; margin: 30px 0; text-align: center; border-left: 5px solid var(--rouge);">
+                <p style="font-size: 16px; font-weight: 700; color: var(--noir);">
+                    ⚠️ Si plusieurs de ces signaux persistent plus de 2 semaines, il est temps de demander de l'aide.
+                </p>
+            </div>
+
+            <h3 style="font-size: 28px; font-weight: 800; color: var(--violet); margin: 50px 0 20px; text-align: center;">
+                Ma balance énergétique
+            </h3>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin: 40px 0;">
+                <div style="background: linear-gradient(135deg, rgba(124, 179, 66, 0.1), rgba(139, 195, 74, 0.15)); border-radius: 30px; padding: 35px;">
+                    <h4 style="font-size: 22px; font-weight: 800; color: var(--vert); margin-bottom: 20px; text-align: center;">
+                        🌱 Ressources
+                    </h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div style="background: var(--blanc); border-radius: 15px; padding: 20px; text-align: center;">
+                            <div style="font-size: 36px; margin-bottom: 8px;">🌳</div>
+                            <p style="font-size: 14px; font-weight: 600;">Nature</p>
+                        </div>
+                        <div style="background: var(--blanc); border-radius: 15px; padding: 20px; text-align: center;">
+                            <div style="font-size: 36px; margin-bottom: 8px;">👥</div>
+                            <p style="font-size: 14px; font-weight: 600;">Amis</p>
+                        </div>
+                        <div style="background: var(--blanc); border-radius: 15px; padding: 20px; text-align: center;">
+                            <div style="font-size: 36px; margin-bottom: 8px;">🎨</div>
+                            <p style="font-size: 14px; font-weight: 600;">Créativité</p>
+                        </div>
+                        <div style="background: var(--blanc); border-radius: 15px; padding: 20px; text-align: center;">
+                            <div style="font-size: 36px; margin-bottom: 8px;">💪</div>
+                            <p style="font-size: 14px; font-weight: 600;">Sport</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: linear-gradient(135deg, rgba(255, 23, 102, 0.1), rgba(255, 92, 141, 0.15)); border-radius: 30px; padding: 35px;">
+                    <h4 style="font-size: 22px; font-weight: 800; color: var(--rouge); margin-bottom: 20px; text-align: center;">
+                        ⚡ Stresseurs
+                    </h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div style="background: var(--blanc); border-radius: 15px; padding: 20px; text-align: center;">
+                            <div style="font-size: 36px; margin-bottom: 8px;">❌</div>
+                            <p style="font-size: 14px; font-weight: 600;">Conflits</p>
+                        </div>
+                        <div style="background: var(--blanc); border-radius: 15px; padding: 20px; text-align: center;">
+                            <div style="font-size: 36px; margin-bottom: 8px;">📄</div>
+                            <p style="font-size: 14px; font-weight: 600;">Admin</p>
+                        </div>
+                        <div style="background: var(--blanc); border-radius: 15px; padding: 20px; text-align: center;">
+                            <div style="font-size: 36px; margin-bottom: 8px;">📱</div>
+                            <p style="font-size: 14px; font-weight: 600;">Écrans</p>
+                        </div>
+                        <div style="background: var(--blanc); border-radius: 15px; padding: 20px; text-align: center;">
+                            <div style="font-size: 36px; margin-bottom: 8px;">💰</div>
+                            <p style="font-size: 14px; font-weight: 600;">Argent</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="font-size: 28px; font-weight: 800; color: var(--violet); margin: 50px 0 20px; text-align: center;">
+                Étape 2 : Identifier mes outils et mes forces
+            </h3>
+
+            <div style="background: linear-gradient(135deg, rgba(139, 71, 137, 0.1), rgba(156, 39, 176, 0.15)); border-radius: 30px; padding: 40px; margin: 30px 0;">
+                <h4 style="font-size: 20px; font-weight: 800; color: var(--violet); margin-bottom: 25px; text-align: center;">
+                    Ma boîte à outils
+                </h4>
+                
+                <div style="display: grid; gap: 20px;">
+                    <div style="background: var(--blanc); border-radius: 20px; padding: 25px; border-left: 5px solid var(--turquoise);">
+                        <h5 style="font-size: 18px; font-weight: 700; color: var(--turquoise); margin-bottom: 12px;">
+                            🧘 Régulation par le CORPS
+                        </h5>
+                        <p style="font-size: 15px; line-height: 1.7; opacity: 0.9;">
+                            Respiration carrée (4-4-4-4 sec), marche, étirements, sommeil
+                        </p>
+                    </div>
+
+                    <div style="background: var(--blanc); border-radius: 20px; padding: 25px; border-left: 5px solid var(--vert);">
+                        <h5 style="font-size: 18px; font-weight: 700; color: var(--vert); margin-bottom: 12px;">
+                            👥 Régulation par le LIEN
+                        </h5>
+                        <p style="font-size: 15px; line-height: 1.7; opacity: 0.9;">
+                            Parler à quelqu'un de confiance, passer du temps avec des proches
+                        </p>
+                    </div>
+
+                    <div style="background: var(--blanc); border-radius: 20px; padding: 25px; border-left: 5px solid var(--orange);">
+                        <h5 style="font-size: 18px; font-weight: 700; color: var(--orange); margin-bottom: 12px;">
+                            🎨 Régulation par l'EXPRESSION
+                        </h5>
+                        <p style="font-size: 15px; line-height: 1.7; opacity: 0.9;">
+                            Écriture, dessin, musique, activité créative
+                        </p>
+                    </div>
+                </div>
+
+                <div style="background: linear-gradient(135deg, rgba(255, 23, 102, 0.1), rgba(255, 92, 141, 0.15)); border-radius: 20px; padding: 25px; margin-top: 25px; border-left: 5px solid var(--rouge);">
+                    <p style="font-size: 15px; font-weight: 700; color: var(--noir);">
+                        ⚠️ Attention aux stratégies de fuite ! Scroller, manger, trop dormir peuvent soulager sur le moment 
+                        mais aggravent le problème à long terme.
+                    </p>
+                </div>
+            </div>
+
+            <h3 style="font-size: 28px; font-weight: 800; color: var(--violet); margin: 50px 0 20px; text-align: center;">
+                Étape 3 : Créer mon plan d'action concret
+            </h3>
+
+            <div style="background: linear-gradient(135deg, rgba(124, 179, 66, 0.1), rgba(139, 195, 74, 0.15)); border-radius: 30px; padding: 40px; margin: 30px 0;">
+                <div style="background: var(--blanc); border-radius: 20px; padding: 30px; margin-bottom: 25px;">
+                    <h5 style="font-size: 20px; font-weight: 800; color: var(--vert); margin-bottom: 15px;">
+                        1. Choisis UNE priorité
+                    </h5>
+                    <div style="display: flex; flex-wrap: wrap; gap: 15px; justify-content: center;">
+                        <div style="background: var(--gris-clair); border-radius: 15px; padding: 15px 25px; font-weight: 600;">😴 Sommeil</div>
+                        <div style="background: var(--gris-clair); border-radius: 15px; padding: 15px 25px; font-weight: 600;">🍎 Alimentation</div>
+                        <div style="background: var(--gris-clair); border-radius: 15px; padding: 15px 25px; font-weight: 600;">🏃 Activité physique</div>
+                        <div style="background: var(--gris-clair); border-radius: 15px; padding: 15px 25px; font-weight: 600;">📱 Temps d'écran</div>
+                        <div style="background: var(--gris-clair); border-radius: 15px; padding: 15px 25px; font-weight: 600;">🧘 Gestion stress</div>
+                    </div>
+                    <p style="font-size: 14px; margin-top: 15px; opacity: 0.8; text-align: center;">
+                        Pour ne pas vous disperser, concentrez-vous sur un seul domaine à améliorer pour commencer.
+                    </p>
+                </div>
+
+                <div style="background: var(--blanc); border-radius: 20px; padding: 30px;">
+                    <h5 style="font-size: 20px; font-weight: 800; color: var(--bleu); margin-bottom: 15px;">
+                        2. Définis ton prochain PETIT pas
+                    </h5>
+                    <p style="font-size: 16px; line-height: 1.8; margin-bottom: 15px;">
+                        L'objectif et le plan doivent être <strong>concrets</strong> et <strong>réalisables</strong>. 
+                        Un petit pas que vous êtes sûr de pouvoir faire vaut mieux qu'un grand projet irréaliste.
+                    </p>
+                    <div style="background: linear-gradient(135deg, rgba(255, 159, 28, 0.1), rgba(255, 209, 102, 0.15)); border-radius: 15px; padding: 25px; margin-top: 20px;">
+                        <p style="font-size: 15px; font-weight: 700; color: var(--orange); margin-bottom: 10px;">
+                            Exemple d'action :
+                        </p>
+                        <p style="font-size: 15px; font-style: italic;">
+                            "Texte un ami proche 10 minutes, 2 fois cette semaine."
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="font-size: 28px; font-weight: 800; color: var(--noir); margin: 50px 0 20px; text-align: center;">
+                Annexe : Mon carnet de ressources
+            </h3>
+
+            <div style="background: var(--gris-clair); border-radius: 30px; padding: 40px;">
+                <p style="text-align: center; font-size: 20px; font-weight: 700; margin-bottom: 30px; color: var(--noir);">
+                    "Vous n'êtes pas seul·e."
+                </p>
+                <p style="text-align: center; font-size: 16px; margin-bottom: 35px; opacity: 0.8;">
+                    Ces services et structures sont là pour vous écouter, vous orienter et vous accompagner.
+                </p>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px;">
+                    <div style="background: linear-gradient(135deg, rgba(255, 23, 102, 0.1), rgba(255, 92, 141, 0.15)); border-radius: 20px; padding: 30px;">
+                        <h5 style="font-size: 18px; font-weight: 800; color: var(--rouge); margin-bottom: 20px; text-align: center;">
+                            Numéros d'urgence gratuits et anonymes
+                        </h5>
+                        <div style="display: flex; flex-direction: column; gap: 12px;">
+                            <div style="display: flex; justify-content: space-between; padding: 12px; background: var(--blanc); border-radius: 10px;">
+                                <span style="font-weight: 600;">Prévention suicide</span>
+                                <span style="font-weight: 800; color: var(--rouge);">3114</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 12px; background: var(--blanc); border-radius: 10px;">
+                                <span style="font-weight: 600;">Fil Santé Jeunes</span>
+                                <span style="font-weight: 800; color: var(--rouge);">0 800 235 236</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 12px; background: var(--blanc); border-radius: 10px;">
+                                <span style="font-weight: 600;">Écoute Cannabis</span>
+                                <span style="font-weight: 800; color: var(--rouge);">0 800 23 13 13</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 12px; background: var(--blanc); border-radius: 10px;">
+                                <span style="font-weight: 600;">Violences femmes info</span>
+                                <span style="font-weight: 800; color: var(--rouge);">3919</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="background: linear-gradient(135deg, rgba(77, 212, 212, 0.1), rgba(33, 150, 243, 0.15)); border-radius: 20px; padding: 30px;">
+                        <h5 style="font-size: 18px; font-weight: 800; color: var(--bleu); margin-bottom: 20px; text-align: center;">
+                            Principales structures d'aide
+                        </h5>
+                        <div style="display: flex; flex-direction: column; gap: 12px;">
+                            <div style="padding: 12px; background: var(--blanc); border-radius: 10px;">
+                                <p style="font-weight: 700; margin-bottom: 5px;">Médecin traitant</p>
+                                <p style="font-size: 13px; opacity: 0.8;">Premier contact pour toute question de santé</p>
+                            </div>
+                            <div style="padding: 12px; background: var(--blanc); border-radius: 10px;">
+                                <p style="font-weight: 700; margin-bottom: 5px;">CMP (Centre Médico-Psychologique)</p>
+                                <p style="font-size: 13px; opacity: 0.8;">Consultations psychologiques gratuites</p>
+                            </div>
+                            <div style="padding: 12px; background: var(--blanc); border-radius: 10px;">
+                                <p style="font-weight: 700; margin-bottom: 5px;">Planning Familial</p>
+                                <p style="font-size: 13px; opacity: 0.8;">Santé sexuelle, vie affective, contraception</p>
+                            </div>
+                            <div style="padding: 12px; background: var(--blanc); border-radius: 10px;">
+                                <p style="font-weight: 700; margin-bottom: 5px;">CSAPA</p>
+                                <p style="font-size: 13px; opacity: 0.8;">Aide spécialisée sur les addictions (alcool, drogues, écrans)</p>
+                            </div>
+                            <div style="padding: 12px; background: var(--blanc); border-radius: 10px;">
+                                <p style="font-weight: 700; margin-bottom: 5px;">Conseiller Mission Locale</p>
+                                <p style="font-size: 13px; opacity: 0.8;">Aide dans les démarches et orientation</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="https://mlpb-tools.github.io/Energie/" target="_blank" class="btn btn-primary" style="margin-right: 15px;">
+                    🎮 Jouer au jeu de l'Énergie
+                </a>
+                <a href="https://gemini.google.com/share/7c1d5e54a789" target="_blank" class="btn btn-secondary">
+                    💚 Créer mon plan santé personnalisé
+                </a>
+                <p style="margin-top: 20px; font-size: 14px; opacity: 0.7;">
+                    Gère ton énergie avec le jeu interactif, puis crée ton plan d'action personnalisé
+                </p>
+            </div>
+        </div>
+
+        <!-- BLOC 7 : Réalité du travail -->
+        <div class="bloc">
+            <div class="bloc-header">
+                <div class="bloc-number">7</div>
+                <h2>La réalité du travail au quotidien</h2>
+            </div>
+
+            <p style="text-align: center; font-size: 18px; margin-bottom: 30px; opacity: 0.8;">
+                Anticiper les aspects pratiques pour ne pas être pris de court.
+            </p>
+
+            <div class="checklist">
+                <div class="checklist-item">
+                    <div class="checkbox"></div>
+                    <div class="checklist-text">🚇 Transport : comment tu vas au travail ? Combien de temps ? Quel coût ?</div>
+                </div>
+
+                <div class="checklist-item">
+                    <div class="checkbox"></div>
+                    <div class="checklist-text">⏰ Horaires : tu es plutôt matinal ou du soir ? Horaires fixes ou variables ?</div>
+                </div>
+
+                <div class="checklist-item">
+                    <div class="checkbox"></div>
+                    <div class="checklist-text">😴 Fatigue : rester debout toute la journée, ou assis devant un écran ?</div>
+                </div>
+
+                <div class="checklist-item">
+                    <div class="checkbox"></div>
+                    <div class="checklist-text">🍽️ Repas : tu manges où ? Tu apportes ton lunch ? Cantine dispo ?</div>
+                </div>
+
+                <div class="checklist-item">
+                    <div class="checkbox"></div>
+                    <div class="checklist-text">🏥 Santé : le job est-il physiquement exigeant ? Risques particuliers ?</div>
+                </div>
+
+                <div class="checklist-item">
+                    <div class="checkbox"></div>
+                    <div class="checklist-text">📅 Organisation : vie perso + travail, comment tu gères ?</div>
+                </div>
+            </div>
+
+            <div style="background: linear-gradient(135deg, rgba(255, 159, 28, 0.1), rgba(255, 209, 102, 0.15)); border-radius: 25px; padding: 30px; margin-top: 30px;">
+                <h3 style="font-size: 20px; font-weight: 800; margin-bottom: 15px; color: var(--noir);">
+                    Pourquoi c'est crucial ?
+                </h3>
+                <p style="font-size: 16px; line-height: 1.8; opacity: 0.9;">
+                    Beaucoup de ruptures de contrat viennent de problèmes pratiques non anticipés : 
+                    trop loin, trop fatigant, impossible de gérer le quotidien. 
+                    En y pensant avant, tu évites les mauvaises surprises.
+                </p>
+            </div>
+
+            <p class="key-message">👉 Anticiper = éviter la rupture.</p>
+        </div>
+
+        <!-- BLOC 8 : Objectifs réalistes -->
+        <div class="bloc">
+            <div class="bloc-header">
+                <div class="bloc-number">8</div>
+                <h2>Objectifs réalistes : priorise !</h2>
+            </div>
+
+            <p style="text-align: center; font-size: 18px; margin-bottom: 40px; opacity: 0.8;">
+                Tu ne peux pas tout avoir tout de suite. Apprends à trier tes priorités.
+            </p>
+
+            <div class="priority-grid">
+                <div class="priority-card priority-a">
+                    <div class="priority-icon">🔴</div>
+                    <div class="priority-label">Prioritaire</div>
+                    <div class="priority-desc">
+                        Les choses sans lesquelles tu ne peux pas accepter le job
+                        <br><br>
+                        <strong>Ex :</strong> Salaire minimum, respect, transport accessible
+                    </div>
+                </div>
+
+                <div class="priority-card priority-b">
+                    <div class="priority-icon">🟠</div>
+                    <div class="priority-label">Important</div>
+                    <div class="priority-desc">
+                        Ce qui améliore beaucoup ta situation mais pas bloquant
+                        <br><br>
+                        <strong>Ex :</strong> Bonne ambiance, horaires confortables, évolution possible
+                    </div>
+                </div>
+
+                <div class="priority-card priority-c">
+                    <div class="priority-icon">🟢</div>
+                    <div class="priority-label">Confort</div>
+                    <div class="priority-desc">
+                        Le petit plus qui fait plaisir mais pas essentiel
+                        <br><br>
+                        <strong>Ex :</strong> Tickets resto, CE, proximité maison
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: linear-gradient(135deg, rgba(77, 212, 212, 0.1), rgba(33, 150, 243, 0.1)); border-radius: 25px; padding: 30px; margin-top: 40px;">
+                <h3 style="font-size: 20px; font-weight: 800; margin-bottom: 15px; color: var(--noir);">
+                    Stratégie gagnante :
+                </h3>
+                <p style="font-size: 16px; line-height: 1.8; opacity: 0.9;">
+                    Commence par viser les <strong style="color: var(--rouge);">prioritaires</strong>. 
+                    Une fois que tu as un job stable qui remplit ces critères, 
+                    tu pourras chercher à améliorer les <strong style="color: var(--orange);">importants</strong>, 
+                    puis les <strong style="color: var(--vert);">conforts</strong>. 
+                    <br><br>
+                    Vouloir tout d'un coup = risque de ne rien trouver ou de s'épuiser.
+                </p>
+            </div>
+
+            <p class="key-message">👉 Avancer = prioriser.</p>
+
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="https://mlpb-tools.github.io/mes-objectifs/" target="_blank" class="btn btn-primary">
+                    🎯 Définir mes objectifs
+                </a>
+                <p style="margin-top: 15px; font-size: 14px; opacity: 0.7;">
+                    Activité guidée pour fixer des objectifs réalistes et réalisables
+                </p>
+            </div>
+        </div>
+
+        <!-- CTA Final -->
+        <div class="cta-final">
+            <div style="position: relative;">
+                <div style="position: absolute; width: 400px; height: 400px; background: var(--turquoise); border-radius: 50%; opacity: 0.1; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: -1;"></div>
+                
+                <h2>Prêt à passer à l'action ?</h2>
+                <p>
+                    Maintenant que tu comprends mieux le rapport au travail, 
+                    passe aux activités pratiques pour avancer concrètement.
+                </p>
+                
+                <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                    <a href="#" class="btn btn-primary">Commencer les activités</a>
+                    <a href="#" class="btn btn-secondary">Parler à un conseiller</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div style="text-align: center; padding: 40px 20px; opacity: 0.6; font-size: 14px;">
+            <p>Développé dans le cadre du projet Life Skills 4 Youth</p>
+            <p>Co-financé par l'Union Européenne</p>
+        </div>
+    </div>
+</body>
+</html>
