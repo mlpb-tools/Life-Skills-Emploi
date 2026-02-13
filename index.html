@@ -1,995 +1,888 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LS4YOU-Emploi - Life Skills 4 Youth</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MLS4YOU — #1 Emploi</title>
 
-        :root {
-            --rouge: #FF1766;
-            --orange: #FF9F1C;
-            --jaune: #FFD166;
-            --vert: #7CB342;
-            --bleu: #2196F3;
-            --turquoise: #4DD4D4;
-            --rose: #FF5C8D;
-            --violet: #8B4789;
-            --blanc: #FFFFFF;
-            --gris-clair: #F8F9FA;
-            --noir: #2C3E50;
-        }
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: var(--blanc);
-            color: var(--noir);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
+  <!-- Script Lucide Icons (Correction: Utilisation de la version UMD spécifique pour garantir la variable globale) -->
+  <script src="https://unpkg.com/lucide@0.263.1/dist/umd/lucide.min.js"></script>
 
-        /* Mode Webinaire - Navigation par slides */
-        .slide-controls {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 1000;
-            background: rgba(44, 62, 80, 0.95);
-            padding: 15px 30px;
-            border-radius: 50px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-            display: flex;
-            gap: 20px;
-            align-items: center;
-        }
+  <style>
+    :root {
+      /* PALETTE STRICTE LS4YOU */
+      --red: #C62828;         /* Rouge cerise profond */
+      --yellow: #FFC928;      /* Jaune vif chaleureux */
+      --turq: #20B8AE;        /* Turquoise lumineux */
+      --mint: #BFEFE8;        /* Menthe pastel */
+      --orange: #FFB067;      /* Orange clair */
 
-        .slide-btn {
-            background: var(--turquoise);
-            color: var(--blanc);
-            border: none;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            font-size: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 900;
-        }
+      --bg: #FFF9F0;          /* Fond crème chaleureux */
+      --ink: #101114;         
+      --muted: rgba(16, 17, 20, 0.7);
 
-        .slide-btn:hover {
-            background: var(--rouge);
-            transform: scale(1.1);
-        }
+      --shadow: 0 16px 30px rgba(16, 17, 20, 0.08);
+      --max: 980px;
+    }
 
-        .slide-btn:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-        }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Montserrat', system-ui, -apple-system, sans-serif;
+      overflow-x: hidden;
+    }
 
-        .slide-counter {
-            color: var(--blanc);
-            font-weight: 700;
-            font-size: 16px;
-            min-width: 100px;
-            text-align: center;
-        }
+    /* TYPOGRAPHIE GLOBALE */
+    h1, h2, h3, .baloo {
+      font-family: 'Baloo 2', cursive;
+      font-weight: 800;
+    }
 
-        .fullscreen-btn {
-            background: var(--orange);
-            color: var(--blanc);
-            border: none;
-            padding: 12px 25px;
-            border-radius: 25px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: 'Poppins', sans-serif;
-            font-size: 14px;
-        }
+    /* --- ARRIÈRE-PLAN VECTORIEL GLOBAL --- */
+    .bg-shapes {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
 
-        .fullscreen-btn:hover {
-            background: var(--rouge);
-        }
+    .bg-circle {
+      position: absolute;
+      border-radius: 999px;
+      filter: blur(2px);
+      opacity: 0.8;
+    }
+    .c-mint { width: 400px; height: 400px; left: -100px; top: -100px; background: var(--mint); opacity: 0.9;}
+    .c-yellow { width: 350px; height: 350px; right: -100px; top: 15%; background: rgba(255, 201, 40, 0.5); }
+    .c-orange { width: 450px; height: 450px; left: -150px; bottom: 0px; background: rgba(255, 176, 103, 0.4); }
+    .c-red { width: 300px; height: 300px; right: -50px; bottom: -50px; background: rgba(198, 40, 40, 0.25); }
 
-        /* Print styles */
-        @media print {
-            .bloc {
-                page-break-after: always;
-                page-break-inside: avoid;
-            }
-            .slide-controls, .bg-shapes {
-                display: none;
-            }
-        }
+    /* Formes Puzzle de fond */
+    .bg-puzzle {
+      position: absolute;
+      opacity: 0.15;
+      animation: float 20s ease-in-out infinite alternate;
+    }
+    .p-red { fill: var(--red); width: 250px; top: 10%; right: 10%; transform: rotate(15deg); }
+    .p-yellow { fill: var(--yellow); width: 300px; top: 50%; left: -5%; transform: rotate(-25deg); animation-delay: -5s; }
+    .p-turq { fill: var(--turq); width: 200px; bottom: 5%; right: 20%; transform: rotate(45deg); animation-delay: -10s; }
 
-        /* Formes décoratives */
-        .bg-shapes {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            z-index: 0;
-            pointer-events: none;
-            overflow: hidden;
-        }
+    @keyframes float {
+      0% { transform: translateY(0px) rotate(0deg); }
+      100% { transform: translateY(30px) rotate(10deg); }
+    }
 
-        .shape-circle {
-            position: absolute;
-            border-radius: 50%;
-            opacity: 0.08;
-            filter: blur(60px);
-        }
+    /* --- CONTENEUR PRINCIPAL --- */
+    .wrap {
+      position: relative;
+      z-index: 1;
+      max-width: var(--max);
+      margin: 22px auto 28px;
+      padding: 0 16px 26px;
+    }
 
-        .shape-1 { width: 500px; height: 500px; background: var(--jaune); top: -150px; right: -100px; }
-        .shape-2 { width: 400px; height: 400px; background: var(--turquoise); bottom: 200px; left: -100px; }
-        .shape-3 { width: 350px; height: 350px; background: var(--rose); top: 40%; right: 10%; }
+    /* CARD CONTAINER */
+    .frame {
+      border-radius: 24px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      overflow: hidden;
+      border: 5px solid transparent;
+      background-image: linear-gradient(rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.95)), linear-gradient(135deg, var(--red), var(--yellow), var(--turq));
+      background-origin: border-box;
+      background-clip: padding-box, border-box;
+    }
 
-        .dot-grid {
-            position: absolute;
-            display: grid;
-            grid-template-columns: repeat(4, 8px);
-            gap: 10px;
-            opacity: 0.25;
-        }
-        .dot-grid span { width: 8px; height: 8px; background: var(--turquoise); border-radius: 50%; }
-        .dots-top { top: 100px; right: 60px; }
-        .dots-bottom { bottom: 150px; left: 80px; }
+    /* --- HEADER --- */
+    .hero {
+      position: relative;
+      border-bottom: 4px solid var(--turq);
+      padding: 16px;
+      background: #fff;
+    }
 
-        /* Container */
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 20px;
-            position: relative;
-            z-index: 1;
-        }
+    .hero-inner {
+      position: relative;
+      border-radius: 18px;
+      overflow: hidden;
+      min-height: clamp(140px, 25vw, 190px);
+      display: flex;
+      align-items: center;
+      padding: 24px 32px;
+    }
 
-        /* Header */
-        .header {
-            padding: 30px 0;
-            margin-bottom: 40px;
-        }
-        .logo { height: 60px; object-fit: contain; }
+    /* Pattern Header */
+    .header-pattern {
+      position: absolute;
+      inset: 0;
+      background: #fdfdfd;
+      z-index: 0;
+    }
+    
+    .hs { position: absolute; border-radius: 50%; opacity: 0.65; mix-blend-mode: multiply; }
+    .hs-1 { background: var(--red); width: 140px; height: 140px; top: -40px; left: 10%; }
+    .hs-2 { background: var(--yellow); width: 180px; height: 180px; bottom: -60px; right: 20%; }
+    .hs-3 { background: var(--turq); width: 120px; height: 120px; top: 20px; right: 40%; }
+    .hs-4 { background: var(--mint); width: 90px; height: 90px; bottom: 10px; left: 30%; }
+    .hs-5 { background: var(--orange); width: 70px; height: 70px; top: 60px; left: 45%; }
 
-        /* Hero */
-        .hero {
-            text-align: center;
-            padding: 80px 20px;
-            position: relative;
-            margin-bottom: 80px;
-        }
-        .hero-bg-circle {
-            position: absolute;
-            width: 600px; height: 600px;
-            background: var(--jaune);
-            border-radius: 50%;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            opacity: 0.15;
-            z-index: -1;
-        }
-        .hero h1 {
-            font-size: 64px; font-weight: 900; color: var(--noir);
-            margin-bottom: 20px; line-height: 1.1; letter-spacing: -1px;
-        }
-        .hero .subtitle {
-            font-size: 22px; color: var(--noir); font-weight: 600;
-            opacity: 0.7; max-width: 600px; margin: 0 auto 40px;
-        }
-        .hero .intro {
-            font-size: 18px; color: var(--noir); max-width: 700px; margin: 0 auto; line-height: 1.8;
-        }
+    .hs-outline { position: absolute; border-radius: 50%; background: transparent; }
+    .ho-1 { border: 6px solid var(--red); width: 100px; height: 100px; top: 15px; right: 15%; opacity: 0.7; }
+    .ho-2 { border: 4px solid var(--turq); width: 60px; height: 60px; bottom: 20px; left: 15%; opacity: 0.8; }
+    .ho-3 { border: 8px solid var(--yellow); width: 150px; height: 150px; top: -30px; left: 35%; opacity: 0.6; }
+    .ho-4 { border: 3px solid var(--orange); width: 40px; height: 40px; top: 40px; right: 5%; opacity: 0.9; }
+    .ho-5 { border: 5px solid var(--mint); width: 110px; height: 110px; bottom: -20px; left: 50%; opacity: 0.7; }
+    .ho-6 { border: 4px solid var(--red); width: 50px; height: 50px; bottom: 40px; right: 35%; opacity: 0.5; }
+    .ho-7 { border: 7px solid var(--turq); width: 130px; height: 130px; top: 50px; left: 5%; opacity: 0.4; }
 
-        /* Bloc section */
-        .bloc {
-            background: var(--blanc);
-            border-radius: 40px;
-            padding: 60px 50px;
-            margin-bottom: 50px;
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.08);
-            position: relative;
-            overflow: visible;
-            animation: fadeInUp 0.6s ease-out;
-        }
+    .hp { position: absolute; opacity: 0.85; filter: drop-shadow(2px 2px 0px rgba(0,0,0,0.1)); }
+    .hp-1 { fill: var(--turq); width: 90px; top: 10px; left: 25%; transform: rotate(15deg); }
+    .hp-2 { fill: var(--red); width: 110px; bottom: 5px; right: 10%; transform: rotate(-20deg); }
+    .hp-3 { fill: var(--yellow); width: 80px; top: 15px; right: 25%; transform: rotate(45deg); }
+    .hp-4 { fill: var(--orange); width: 70px; bottom: 20px; left: 40%; transform: rotate(-45deg); }
 
-        .bloc-header { text-align: center; margin-bottom: 50px; }
-        .bloc-number {
-            display: inline-block; width: 80px; height: 80px;
-            background: linear-gradient(135deg, var(--rouge), var(--rose));
-            color: var(--blanc); border-radius: 50%;
-            font-size: 36px; font-weight: 900;
-            display: flex; align-items: center; justify-content: center;
-            margin-bottom: 20px;
-        }
-        .bloc h2 {
-            font-size: 42px; font-weight: 900; color: var(--noir);
-            margin-bottom: 15px; line-height: 1.2;
-        }
-        .bloc .key-message {
-            font-size: 20px; font-weight: 700; color: var(--rouge);
-            margin-top: 20px; display: flex; align-items: center; justify-content: center; gap: 10px;
-        }
+    .header-content {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+      align-items: flex-start;
+      min-height: 70px;
+    }
 
-        /* Piliers visuels */
-        .pillars { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; margin-top: 40px; }
-        .pillar { text-align: center; padding: 30px 20px; background: var(--gris-clair); border-radius: 30px; transition: transform 0.3s ease; }
-        .pillar:hover { transform: translateY(-5px); }
-        .pillar-icon { font-size: 56px; margin-bottom: 15px; }
-        .pillar h3 { font-size: 20px; font-weight: 800; color: var(--noir); margin-bottom: 10px; }
+    .logo-left, .logo-right {
+      flex: 0 0 auto;
+      display: flex;
+      z-index: 20;
+    }
+    
+    .logo-left { justify-content: flex-start; margin-top: -12px; margin-left: -16px; }
+    .logo-right { justify-content: flex-end; margin-top: -12px; margin-right: -16px; }
+    
+    .header-logo {
+      height: 65px;
+      object-fit: contain;
+      mix-blend-mode: multiply;
+      filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.05));
+    }
 
-        /* Radar/Bulles */
-        .bubbles-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin: 40px 0; }
-        .bubble {
-            background: linear-gradient(135deg, var(--turquoise), var(--bleu));
-            color: var(--blanc); padding: 25px 35px; border-radius: 50px;
-            font-size: 18px; font-weight: 700;
-            box-shadow: 0 8px 25px rgba(77, 212, 212, 0.3); transition: transform 0.3s ease;
-        }
-        .bubble:hover { transform: scale(1.05); }
+    .title-center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      z-index: 15;
+    }
 
-        /* Values Grid */
-        .values-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 20px; margin: 40px 0; }
-        .value-item {
-            background: var(--blanc); border: 3px solid var(--vert);
-            border-radius: 25px; padding: 25px 15px; text-align: center; transition: all 0.3s ease;
-        }
-        .value-item:hover { background: var(--vert); color: var(--blanc); transform: scale(1.05); }
-        .value-icon { font-size: 40px; margin-bottom: 10px; }
-        .value-name { font-size: 17px; font-weight: 700; }
+    .hero-title {
+      font-family: "Baloo 2", cursive;
+      font-size: clamp(32px, 4vw, 42px);
+      color: var(--red);
+      margin: 0;
+      line-height: 1;
+      text-shadow: 
+        -3px -3px 0 #fff, 3px -3px 0 #fff, -3px 3px 0 #fff, 3px 3px 0 #fff,
+        -4px 0 0 #fff, 4px 0 0 #fff, 0 -4px 0 #fff, 0 4px 0 #fff,
+        0 8px 16px rgba(0,0,0,0.15);
+    }
+    .hero-title small {
+      display: block;
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(14px, 2vw, 18px);
+      color: var(--ink);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 8px;
+      text-shadow: 
+        -2px -2px 0 #fff, 2px -2px 0 #fff, -2px 2px 0 #fff, 2px 2px 0 #fff;
+    }
 
-        /* Sources compétences */
-        .sources-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 25px; margin: 40px 0; }
-        .source-card {
-            background: linear-gradient(135deg, rgba(255, 157, 28, 0.1), rgba(255, 209, 102, 0.15));
-            border-radius: 25px; padding: 30px 20px; text-align: center;
-            border: 3px solid transparent; transition: all 0.3s ease;
-        }
-        .source-card:hover { border-color: var(--orange); transform: translateY(-5px); }
-        .source-icon { font-size: 48px; margin-bottom: 15px; }
-        .source-label { font-size: 16px; font-weight: 700; color: var(--noir); }
+    /* --- GRID CARDS --- */
+    .cards {
+      padding: 20px 16px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      background: #ffffff;
+    }
 
-        /* Pitch Schema */
-        .pitch-schema { display: flex; align-items: center; justify-content: space-around; margin: 40px 0; flex-wrap: wrap; gap: 20px; }
-        .pitch-element { flex: 1; min-width: 200px; background: var(--gris-clair); border-radius: 30px; padding: 35px 25px; text-align: center; }
-        .pitch-element h4 { font-size: 18px; font-weight: 800; color: var(--rouge); margin-bottom: 15px; }
-        .arrow { font-size: 32px; color: var(--turquoise); font-weight: 900; }
+    .card {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      padding: 16px;
+      border-radius: 18px;
+      box-shadow: 0 8px 16px rgba(16, 17, 20, 0.06);
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+      transition: all .2s cubic-bezier(0.25, 0.8, 0.25, 1);
+      min-height: 120px;
+      border-style: solid;
+      border-width: 3px;
+    }
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 32px rgba(16, 17, 20, 0.12);
+    }
 
-        /* Signaux */
-        .signals { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; margin: 30px 0; }
-        .signal-item {
-            background: linear-gradient(135deg, rgba(255, 23, 102, 0.1), rgba(255, 92, 141, 0.15));
-            border-radius: 20px; padding: 25px 20px; text-align: center; border-left: 5px solid var(--rouge);
-        }
-        .signal-icon { font-size: 40px; margin-bottom: 10px; }
-        .signal-label { font-size: 16px; font-weight: 700; color: var(--noir); }
+    .card-1 { border-color: var(--mint); background: rgba(191,239,232, 0.25); }
+    .card-2 { border-color: var(--red); background: rgba(198,40,40, 0.06); }
+    .card-3 { border-color: var(--yellow); background: rgba(255,201,40, 0.15); }
+    .card-4 { border-color: var(--turq); background: rgba(32,184,174, 0.1); }
+    .card-5 { border-color: var(--orange); background: rgba(255,176,103, 0.15); }
+    .card-6 { border-color: var(--yellow); background: rgba(255,201,40, 0.15); }
 
-        /* Solutions */
-        .solutions { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 25px; margin: 30px 0; }
-        .solution-card {
-            background: linear-gradient(135deg, rgba(124, 179, 66, 0.1), rgba(139, 195, 74, 0.15));
-            border-radius: 25px; padding: 30px 25px; text-align: center; border: 3px solid var(--vert);
-        }
-        .solution-icon { font-size: 44px; margin-bottom: 15px; }
-        .solution-text { font-size: 16px; font-weight: 700; color: var(--noir); }
+    .n {
+      width: 42px; height: 42px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Baloo 2', cursive;
+      font-weight: 800;
+      font-size: 18px;
+      border: 3px solid rgba(255, 255, 255, 0.8);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      flex: 0 0 auto;
+    }
 
-        /* Checklist */
-        .checklist { background: var(--gris-clair); border-radius: 25px; padding: 35px; margin: 30px 0; }
-        .checklist-item { display: flex; align-items: center; gap: 20px; padding: 20px 0; border-bottom: 2px solid rgba(0, 0, 0, 0.05); }
-        .checklist-item:last-child { border-bottom: none; }
-        .checkbox {
-            width: 32px; height: 32px; border: 3px solid var(--turquoise); border-radius: 8px; flex-shrink: 0;
-            display: flex; align-items: center; justify-content: center; background: var(--blanc);
-        }
-        .checkbox::after { content: '✓'; color: var(--turquoise); font-weight: 900; font-size: 20px; }
-        .checklist-text { font-size: 17px; font-weight: 600; color: var(--noir); }
+    .ct h3 {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.1;
+      color: var(--ink);
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+    .ct p {
+      margin: 8px 0 0;
+      font-size: 12px;
+      line-height: 1.4;
+      font-weight: 600;
+      color: var(--muted);
+      max-width: 40ch;
+    }
 
-        /* Priority Grid */
-        .priority-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin: 40px 0; }
-        .priority-card { border-radius: 30px; padding: 40px 30px; text-align: center; border: 4px solid; }
-        .priority-a { background: linear-gradient(135deg, rgba(255, 23, 102, 0.1), rgba(255, 92, 141, 0.15)); border-color: var(--rouge); }
-        .priority-b { background: linear-gradient(135deg, rgba(255, 159, 28, 0.1), rgba(255, 209, 102, 0.15)); border-color: var(--orange); }
-        .priority-c { background: linear-gradient(135deg, rgba(124, 179, 66, 0.1), rgba(139, 195, 74, 0.15)); border-color: var(--vert); }
-        .priority-icon { font-size: 56px; margin-bottom: 20px; }
-        .priority-label { font-size: 24px; font-weight: 900; margin-bottom: 15px; }
+    .pill {
+      margin-top: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: #ffffff;
+      border: 2px solid rgba(16, 17, 20, 0.08);
+      font-weight: 800;
+      font-size: 11px;
+      color: var(--ink);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .dot { width: 12px; height: 12px; border-radius: 999px; }
+    .dot.r { background: var(--red); }
+    .dot.y { background: var(--yellow); }
+    .dot.t { background: var(--turq); }
+    .dot.m { background: var(--mint); }
+    .dot.o { background: var(--orange); }
 
-        /* Boutons */
-        .btn {
-            display: inline-block; padding: 20px 50px; border-radius: 50px;
-            font-weight: 800; font-size: 18px; border: none; cursor: pointer;
-            transition: all 0.3s ease; text-decoration: none; font-family: 'Poppins', sans-serif;
-        }
-        .btn-primary { background: var(--rouge); color: var(--blanc); box-shadow: 0 10px 35px rgba(255, 23, 102, 0.3); }
-        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 15px 45px rgba(255, 23, 102, 0.4); }
-        .btn-secondary { background: var(--blanc); color: var(--turquoise); border: 3px solid var(--turquoise); }
-        .btn-secondary:hover { background: var(--turquoise); color: var(--blanc); }
+    /* ikigai full width */
+    .card.wide {
+      grid-column: 1 / -1;
+      align-items: center;
+      background: linear-gradient(90deg, rgba(255, 201, 40, 0.15), rgba(32, 184, 174, 0.15));
+      border: 4px solid transparent;
+      background-image: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), conic-gradient(from 10deg, var(--turq), var(--yellow), var(--red), var(--turq));
+      background-origin: border-box;
+      background-clip: padding-box, border-box;
+    }
+    .card.wide:hover {
+      box-shadow: 0 16px 32px rgba(16,17,20,0.15);
+    }
+    .badge-iki {
+      width: 42px; height: 42px;
+      border-radius: 12px;
+      background: conic-gradient(from 10deg, var(--turq), var(--yellow), var(--red), var(--turq));
+      border: 3px solid white;
+      box-shadow: 0 8px 16px rgba(16, 17, 20, 0.15);
+      flex: 0 0 auto;
+    }
 
-        /* Puzzle décoratif */
-        .puzzle-deco { position: absolute; bottom: -20px; left: -20px; width: 120px; height: 120px; opacity: 0.12; z-index: -1; }
-        .puzzle-piece { width: 55px; height: 55px; position: absolute; border-radius: 10px; }
-        .piece-1 { background: var(--turquoise); top: 0; left: 0; transform: rotate(-12deg); }
-        .piece-2 { background: var(--rouge); top: 0; right: 0; border-radius: 50% 10px 10px 10px; }
-        .piece-3 { background: var(--jaune); bottom: 0; left: 0; }
-        .piece-4 { background: var(--rose); bottom: 0; right: 0; transform: rotate(12deg); }
+    /* FRISE COULEURS */
+    .frieze {
+      display: flex;
+      gap: 12px;
+      padding: 0 20px;
+      margin-top: 10px;
+      margin-bottom: 24px;
+    }
+    .capsule {
+      height: 16px;
+      border-radius: 999px;
+      flex: 1;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+    }
 
-        /* CTA final */
-        .cta-final { text-align: center; padding: 80px 20px; margin: 80px 0 40px; }
-        .cta-final h2 { font-size: 48px; font-weight: 900; color: var(--noir); margin-bottom: 25px; }
-        .cta-final p { font-size: 20px; color: var(--noir); opacity: 0.7; margin-bottom: 40px; max-width: 600px; margin-left: auto; margin-right: auto; }
-        
-        /* Texte ajouté */
-        .intro-text {
-            font-size: 16px;
-            opacity: 0.9;
-            margin-bottom: 20px;
-        }
+    /* --- MODALE --- */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(16, 17, 20, 0.6);
+      backdrop-filter: blur(5px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    .modal-content {
+      background: white;
+      width: 100%;
+      max-width: 600px;
+      border-radius: 24px;
+      padding: 32px;
+      position: relative;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      transform: translateY(20px);
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      border: 4px solid var(--turq); /* Défaut, changé par JS */
+      max-height: 90vh; /* Limite hauteur */
+      display: flex;
+      flex-direction: column;
+    }
+    .modal-overlay.active .modal-content {
+      transform: translateY(0);
+    }
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: #f1f5f9;
+      border: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--ink);
+      transition: all 0.2s;
+    }
+    .modal-close:hover {
+      background: var(--red);
+      color: white;
+    }
+    .modal-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+      flex-shrink: 0; /* Ne pas rétrécir */
+    }
+    .modal-header .n {
+      font-size: 20px;
+      width: 50px;
+      height: 50px;
+    }
+    .modal-header h2 {
+      font-size: 24px;
+      margin: 0;
+      line-height: 1.1;
+      color: var(--ink);
+      text-transform: uppercase;
+    }
+    .modal-body {
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--muted);
+      margin-bottom: 24px;
+      overflow-y: auto; /* Scroll si contenu long */
+      padding-right: 8px; /* Espace pour la scrollbar */
+    }
+    .modal-body strong {
+      color: var(--ink);
+      font-weight: 700;
+    }
+    .modal-footer {
+        flex-shrink: 0; /* Garder le footer visible */
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .modal-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 16px;
+      background: var(--ink);
+      color: white;
+      text-decoration: none;
+      font-weight: 800;
+      border-radius: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      transition: all 0.2s;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .modal-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 40px; }
-            .bloc { padding: 40px 25px; }
-            .bloc h2 { font-size: 32px; }
-            .pillars, .values-grid, .sources-grid, .priority-grid, .ikigai-grid { grid-template-columns: 1fr; }
-            .pitch-schema { flex-direction: column; }
-            .arrow { transform: rotate(90deg); }
-        }
+    /* Scrollbar pour modal body */
+    .modal-body::-webkit-scrollbar { width: 6px; }
+    .modal-body::-webkit-scrollbar-track { background: transparent; }
+    .modal-body::-webkit-scrollbar-thumb { background: #E2E8F0; border-radius: 4px; }
 
-        /* Animations */
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+    /* EU footer */
+    .eu {
+      margin: 0 20px 20px;
+      border-radius: 20px;
+      background: #ffffff;
+      border: 3px solid rgba(16, 17, 20, 0.08);
+      box-shadow: 0 10px 20px rgba(16, 17, 20, 0.05);
+      padding: 20px;
+      color: var(--ink);
+      text-align: center;
+      position: relative;
+      z-index: 10;
+    }
+    .eu-top {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+    }
+    .eu-logo-container {
+      background: transparent;
+      padding: 0;
+      display: inline-block;
+    }
+    .eu-logo {
+      height: 75px;
+      width: auto;
+      display: block;
+      mix-blend-mode: multiply;
+      filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.05));
+    }
+    .eu p {
+      margin: 8px auto 0;
+      max-width: 90ch;
+      font-size: 12px;
+      line-height: 1.6;
+      color: var(--muted);
+      font-weight: 500;
+    }
+    .eu .copyright {
+      color: var(--ink);
+      font-weight: 700;
+      font-size: 12px;
+      margin-top: 4px;
+    }
+    .eu .link {
+      display: inline-block;
+      margin-top: 12px;
+      color: var(--turq);
+      font-weight: 800;
+      text-decoration: none;
+      font-size: 13px;
+    }
+    .eu .link:hover { text-decoration: underline; color: var(--red);}
 
-        /* Confettis */
-        .confetti { position: absolute; width: 15px; height: 15px; border-radius: 50%; opacity: 0.3; }
-        .conf-1 { background: var(--turquoise); top: 80px; right: 100px; }
-        .conf-2 { background: var(--rose); top: 200px; right: 50px; }
-        .conf-3 { background: var(--jaune); bottom: 150px; left: 80px; }
-        .conf-4 { background: var(--orange); bottom: 250px; left: 120px; }
-    </style>
+    /* RESPONSIVE */
+    @media (max-width: 920px) {
+      .header-logo { height: 50px; }
+      .eu-logo { height: 65px; }
+      .cards { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 760px) {
+      .header-content { flex-wrap: wrap; align-items: center; }
+      .logo-left, .logo-right { margin: 0; }
+      
+      /* Ajustement spécifique mobile pour les logos du header */
+      .header-logo { height: 42px; }
+      
+      .title-center { position: relative; top: auto; left: auto; transform: none; order: 3; width: 100%; margin-top: 15px; }
+      .hero-title { font-size: 28px; } /* Titre légèrement réduit pour l'harmonie mobile */
+      
+      .cards { grid-template-columns: 1fr; }
+      .card.wide { grid-column: auto; }
+    }
+  </style>
 </head>
+
 <body>
-    <!-- Formes décoratives arrière-plan -->
-    <div class="bg-shapes">
-        <div class="shape-circle shape-1"></div>
-        <div class="shape-circle shape-2"></div>
-        <div class="shape-circle shape-3"></div>
-        <div class="dot-grid dots-top">
-            <span></span><span></span><span></span><span></span>
-            <span></span><span></span><span></span><span></span>
-            <span></span><span></span><span></span><span></span>
-            <span></span><span></span><span></span><span></span>
+  <!-- BACKGROUND DECORATIONS -->
+  <div class="bg-shapes" aria-hidden="true">
+    <div class="bg-circle c-mint"></div>
+    <div class="bg-circle c-yellow"></div>
+    <div class="bg-circle c-orange"></div>
+    <div class="bg-circle c-red"></div>
+
+    <svg class="bg-puzzle p-red" viewBox="0 0 24 24">
+      <path d="M20.5 11H19V7c0-1.1-.9-2-2-2h-4V3.5C13 2.12 11.88 1 10.5 1S8 2.12 8 3.5V5H4c-1.1 0-1.99.9-1.99 2v3.8H3.5c1.49 0 2.7 1.21 2.7 2.7s-1.21 2.7-2.7 2.7H2V20c0 1.1.9 2 2 2h3.8v-1.5c0-1.49 1.21-2.7 2.7-2.7 1.49 0 2.7 1.21 2.7 2.7V22H17c1.1 0 2-.9 2-2v-4h1.5c1.38 0 2.5-1.12 2.5-2.5S21.88 11 20.5 11z"/>
+    </svg>
+    <svg class="bg-puzzle p-turq" viewBox="0 0 24 24">
+      <path d="M20.5 11H19V7c0-1.1-.9-2-2-2h-4V3.5C13 2.12 11.88 1 10.5 1S8 2.12 8 3.5V5H4c-1.1 0-1.99.9-1.99 2v3.8H3.5c1.49 0 2.7 1.21 2.7 2.7s-1.21 2.7-2.7 2.7H2V20c0 1.1.9 2 2 2h3.8v-1.5c0-1.49 1.21-2.7 2.7-2.7 1.49 0 2.7 1.21 2.7 2.7V22H17c1.1 0 2-.9 2-2v-4h1.5c1.38 0 2.5-1.12 2.5-2.5S21.88 11 20.5 11z"/>
+    </svg>
+    <svg class="bg-puzzle p-yellow" viewBox="0 0 24 24">
+      <path d="M20.5 11H19V7c0-1.1-.9-2-2-2h-4V3.5C13 2.12 11.88 1 10.5 1S8 2.12 8 3.5V5H4c-1.1 0-1.99.9-1.99 2v3.8H3.5c1.49 0 2.7 1.21 2.7 2.7s-1.21 2.7-2.7 2.7H2V20c0 1.1.9 2 2 2h3.8v-1.5c0-1.49 1.21-2.7 2.7-2.7 1.49 0 2.7 1.21 2.7 2.7V22H17c1.1 0 2-.9 2-2v-4h1.5c1.38 0 2.5-1.12 2.5-2.5S21.88 11 20.5 11z"/>
+    </svg>
+  </div>
+
+  <main class="wrap">
+    <section class="frame">
+
+      <!-- HEADER EXPLOSIF -->
+      <header class="hero">
+        <div class="hero-inner">
+          
+          <!-- PATTERN DE FOND DU HEADER -->
+          <div class="header-pattern" aria-hidden="true">
+            <div class="hs hs-1"></div>
+            <div class="hs hs-2"></div>
+            <div class="hs hs-3"></div>
+            <div class="hs hs-4"></div>
+            <div class="hs hs-5"></div>
+            
+            <div class="hs-outline ho-1"></div>
+            <div class="hs-outline ho-2"></div>
+            <div class="hs-outline ho-3"></div>
+            <div class="hs-outline ho-4"></div>
+            <div class="hs-outline ho-5"></div>
+            <div class="hs-outline ho-6"></div>
+            <div class="hs-outline ho-7"></div>
+            
+            <svg class="hp hp-1" viewBox="0 0 24 24"><path d="M20.5 11H19V7c0-1.1-.9-2-2-2h-4V3.5C13 2.12 11.88 1 10.5 1S8 2.12 8 3.5V5H4c-1.1 0-1.99.9-1.99 2v3.8H3.5c1.49 0 2.7 1.21 2.7 2.7s-1.21 2.7-2.7 2.7H2V20c0 1.1.9 2 2 2h3.8v-1.5c0-1.49 1.21-2.7 2.7-2.7 1.49 0 2.7 1.21 2.7 2.7V22H17c1.1 0 2-.9 2-2v-4h1.5c1.38 0 2.5-1.12 2.5-2.5S21.88 11 20.5 11z"/></svg>
+            <svg class="hp hp-2" viewBox="0 0 24 24"><path d="M20.5 11H19V7c0-1.1-.9-2-2-2h-4V3.5C13 2.12 11.88 1 10.5 1S8 2.12 8 3.5V5H4c-1.1 0-1.99.9-1.99 2v3.8H3.5c1.49 0 2.7 1.21 2.7 2.7s-1.21 2.7-2.7 2.7H2V20c0 1.1.9 2 2 2h3.8v-1.5c0-1.49 1.21-2.7 2.7-2.7 1.49 0 2.7 1.21 2.7 2.7V22H17c1.1 0 2-.9 2-2v-4h1.5c1.38 0 2.5-1.12 2.5-2.5S21.88 11 20.5 11z"/></svg>
+            <svg class="hp hp-3" viewBox="0 0 24 24"><path d="M20.5 11H19V7c0-1.1-.9-2-2-2h-4V3.5C13 2.12 11.88 1 10.5 1S8 2.12 8 3.5V5H4c-1.1 0-1.99.9-1.99 2v3.8H3.5c1.49 0 2.7 1.21 2.7 2.7s-1.21 2.7-2.7 2.7H2V20c0 1.1.9 2 2 2h3.8v-1.5c0-1.49 1.21-2.7 2.7-2.7 1.49 0 2.7 1.21 2.7 2.7V22H17c1.1 0 2-.9 2-2v-4h1.5c1.38 0 2.5-1.12 2.5-2.5S21.88 11 20.5 11z"/></svg>
+            <svg class="hp hp-4" viewBox="0 0 24 24"><path d="M20.5 11H19V7c0-1.1-.9-2-2-2h-4V3.5C13 2.12 11.88 1 10.5 1S8 2.12 8 3.5V5H4c-1.1 0-1.99.9-1.99 2v3.8H3.5c1.49 0 2.7 1.21 2.7 2.7s-1.21 2.7-2.7 2.7H2V20c0 1.1.9 2 2 2h3.8v-1.5c0-1.49 1.21-2.7 2.7-2.7 1.49 0 2.7 1.21 2.7 2.7V22H17c1.1 0 2-.9 2-2v-4h1.5c1.38 0 2.5-1.12 2.5-2.5S21.88 11 20.5 11z"/></svg>
+          </div>
+
+          <!-- CONTENU DU HEADER (Sans fond opaque) -->
+          <div class="header-content">
+            <div class="logo-left">
+              <img src="https://static.wixstatic.com/media/dd5dab_47743b1c86024865ba19e623a3db327f~mv2.avif/v1/fill/w_224,h_60,al_c,q_80,enc_avif,quality_auto/dd5dab_47743b1c86024865ba19e623a3db327f~mv2.avif" alt="Logo Mission Locale Pays Basque" class="header-logo" loading="lazy" />
+            </div>
+            
+            <div class="title-center">
+              <h1 class="hero-title">MLS4YOU<small>#1. Emploi</small></h1>
+            </div>
+
+            <div class="logo-right">
+              <img src="https://www.lifeskills4youth.eu/wp-content/uploads/2024/07/LS4YOU_Logo.png" alt="Logo LS4YOU" class="header-logo" loading="lazy" />
+            </div>
+          </div>
+
         </div>
-        <div class="dot-grid dots-bottom">
-            <span></span><span></span><span></span><span></span>
-            <span></span><span></span><span></span><span></span>
-            <span></span><span></span><span></span><span></span>
-            <span></span><span></span><span></span><span></span>
+      </header>
+
+      <!-- CARDS -->
+      <section class="cards" aria-label="Parcours MLS4YOU">
+
+        <div class="card card-1" onclick="openModal('intro')">
+          <div class="n" style="background: var(--mint); color: var(--ink);">1</div>
+          <div class="ct">
+            <h3>INTRODUCTION</h3>
+            <p>Le parcours Life Skills : 7 modules complémentaires pour tracer ton parcours d’insertion.</p>
+            <span class="pill"><span class="dot t"></span>Démarrer ici</span>
+          </div>
         </div>
-        <div class="confetti conf-1"></div>
-        <div class="confetti conf-2"></div>
-        <div class="confetti conf-3"></div>
-        <div class="confetti conf-4"></div>
+
+        <div class="card card-2" onclick="openModal('perso')">
+          <div class="n" style="background: var(--red); color: white;">2</div>
+          <div class="ct">
+            <h3>MA PERSONNALITÉ</h3>
+            <p>Votre fonctionnement naturel. Travailler en phase avec son tempérament réduit la fatigue.</p>
+            <span class="pill"><span class="dot r"></span>Test 16 profils</span>
+          </div>
+        </div>
+
+        <div class="card card-3" onclick="openModal('valeurs')">
+          <div class="n" style="background: var(--yellow); color: var(--ink);">3</div>
+          <div class="ct">
+            <h3>VALEURS &amp; OBJECTIFS</h3>
+            <p>Vos moteurs profonds + vos priorités actionnables. Aligner valeurs et objectifs pro.</p>
+            <span class="pill"><span class="dot y"></span>Motivation + priorités</span>
+          </div>
+        </div>
+
+        <div class="card card-4" onclick="openModal('competences')">
+          <div class="n" style="background: var(--turq); color: white;">4</div>
+          <div class="ct">
+            <h3>MES COMPÉTENCES</h3>
+            <p>Vie perso, loisirs, jobs courts, galères, bénévolat : tout peut devenir compétence.</p>
+            <span class="pill"><span class="dot m"></span>Ce que je sais faire</span>
+          </div>
+        </div>
+
+        <div class="card card-5" onclick="openModal('energie')">
+          <div class="n" style="background: var(--orange); color: white;">5</div>
+          <div class="ct">
+            <h3>MON ÉNERGIE</h3>
+            <p>Chercher sa voie demande une énergie physique et mentale. Prendre soin de soi = réussir.</p>
+            <span class="pill"><span class="dot o"></span>Rythme &amp; performance</span>
+          </div>
+        </div>
+
+        <div class="card card-6" onclick="openModal('communiquer')">
+          <div class="n" style="background: var(--yellow); color: var(--ink);">6</div>
+          <div class="ct">
+            <h3>COMMUNIQUER</h3>
+            <p>S’Affirmer → Pitch Star → Zone de confort : se présenter avec impact et progresser par l’action.</p>
+            <span class="pill"><span class="dot y"></span>Prise de parole</span>
+          </div>
+        </div>
+
+        <div class="card wide" onclick="openModal('ikigai')">
+          <div class="badge-iki" aria-hidden="true"></div>
+          <div class="ct">
+            <h3 style="font-size: 18px;">MON IKIGAI — SYNTHÈSE</h3>
+            <p style="font-size: 14px;">Là où talents naturels, motivations, compétences et énergie optimale rencontrent des opportunités concrètes.</p>
+            <span class="pill"><span class="dot r"></span>Conclusion</span>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- FRISE COULEURS LS4YOU -->
+      <div class="frieze" aria-hidden="true">
+        <div class="capsule bg-yellow" style="background: var(--yellow);"></div>
+        <div class="capsule bg-turq" style="background: var(--turq);"></div>
+        <div class="capsule bg-red" style="background: var(--red);"></div>
+        <div class="capsule bg-mint" style="background: var(--mint);"></div>
+      </div>
+
+      <!-- EU FOOTER -->
+      <footer class="eu" aria-label="Mentions UE">
+        <div class="eu-top">
+          <div class="eu-logo-container">
+            <img src="https://www.immigration.interieur.gouv.fr/var/miomcti/storage/images/media/mi/images/logos-pictos/cofinance-par-l-union-europeenne-v/1060317-1-fre-FR/Cofinance-par-l-Union-europeenne-V.png" alt="Cofinancé par l'Union européenne" class="eu-logo" loading="lazy">
+          </div>
+        </div>
+        <div class="copyright">
+          © 2026 LS4YOU Project Nr. 2023-2-FR02-KA220-YOU-000175417
+        </div>
+        <p>
+          Funded by the European Union. Views and opinions expressed are however those of the author(s) only and do not necessarily
+          reflect those of the European Union or the Agence Erasmus+ France Jeunesse &amp; Sport (Agence du Service Civique).
+          Neither the European Union nor the granting authority can be held responsible for them.
+        </p>
+        <a class="link" href="#" onclick="return false;">Data Privacy Statement &amp; Imprint</a>
+      </footer>
+
+    </section>
+  </main>
+
+  <!-- MODAL STRUCTURE -->
+  <div id="modal-overlay" class="modal-overlay" aria-hidden="true" onclick="closeModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeModal()"><i data-lucide="x"></i></button>
+      <div class="modal-header">
+        <div class="n" id="modal-number"></div>
+        <h2 id="modal-title"></h2>
+      </div>
+      <div class="modal-body" id="modal-desc"></div>
+      <div class="modal-footer">
+        <!-- Buttons injected dynamically -->
+      </div>
     </div>
+  </div>
 
-    <div class="container">
-        <!-- Header -->
-        <div class="header" style="display: flex; justify-content: space-between; align-items: center;">
-            <img src="https://www.lifeskills4youth.eu/wp-content/uploads/2024/07/LS4YOU_Logo.png" alt="Life Skills 4 Youth" class="logo">
-            <img src="https://static.wixstatic.com/media/dd5dab_47743b1c86024865ba19e623a3db327f~mv2.avif/v1/fill/w_224,h_60,al_c,q_80,enc_avif,quality_auto/dd5dab_47743b1c86024865ba19e623a3db327f~mv2.avif" alt="Mission Locale Pays Basque" class="logo" style="height: 60px;">
-        </div>
-
-        <!-- Hero -->
-        <div class="hero">
-            <div class="hero-bg-circle"></div>
-            <h1 style="color: var(--rouge);">LS4YOU-Emploi</h1>
-            <p class="subtitle">Comprendre le rapport au travail pour mieux s'orienter</p>
-            <p class="intro">
-                Cette infographie aide à comprendre <strong>pourquoi on travaille</strong>, 
-                <strong>comment fonctionner</strong> face au travail, et <strong>comment tenir dans la durée</strong>. 
-                C'est simple, concret, et cela aidera à faire les bons choix.
-            </p>
-        </div>
-
-        <!-- 5 étapes de la mission emploi -->
-        <div class="bloc" style="background: linear-gradient(135deg, rgba(77, 212, 212, 0.05), rgba(255, 209, 102, 0.05));">
-            <div class="bloc-header">
-                <h2 style="color: var(--rouge);">Votre Parcours Vers l'Emploi en 5 Étapes</h2>
-            </div>
-            <div style="display: grid; gap: 30px; margin-top: 50px;">
-                <!-- Étape 1 -->
-                <div style="background: var(--blanc); border-radius: 30px; padding: 35px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); display: flex; align-items: center; gap: 30px; border-left: 6px solid var(--rouge);">
-                    <div style="flex-shrink: 0; width: 80px; height: 80px; background: linear-gradient(135deg, var(--rouge), var(--rose)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 900; color: var(--blanc);">1</div>
-                    <div style="flex: 1;">
-                        <h3 style="font-size: 26px; font-weight: 800; color: var(--rouge); margin-bottom: 10px;">Se connaître</h3>
-                        <p style="font-size: 16px; line-height: 1.7; opacity: 0.9;">Analyser les motivations réelles pour travailler et les freins potentiels.</p>
-                    </div>
-                </div>
-                <!-- Étape 2 -->
-                <div style="background: var(--blanc); border-radius: 30px; padding: 35px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); display: flex; align-items: center; gap: 30px; border-left: 6px solid var(--orange);">
-                    <div style="flex-shrink: 0; width: 80px; height: 80px; background: linear-gradient(135deg, var(--orange), var(--jaune)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 900; color: var(--blanc);">2</div>
-                    <div style="flex: 1;">
-                        <h3 style="font-size: 26px; font-weight: 800; color: var(--orange); margin-bottom: 10px;">Poser ses limites</h3>
-                        <p style="font-size: 16px; line-height: 1.7; opacity: 0.9;">Définir les conditions de travail acceptables et celles qui sont non-négociables.</p>
-                    </div>
-                </div>
-                <!-- Étape 3 -->
-                <div style="background: var(--blanc); border-radius: 30px; padding: 35px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); display: flex; align-items: center; gap: 30px; border-left: 6px solid var(--vert);">
-                    <div style="flex-shrink: 0; width: 80px; height: 80px; background: linear-gradient(135deg, var(--vert), #8BC34A); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 900; color: var(--blanc);">3</div>
-                    <div style="flex: 1;">
-                        <h3 style="font-size: 26px; font-weight: 800; color: var(--vert); margin-bottom: 10px;">Valoriser ses atouts</h3>
-                        <p style="font-size: 16px; line-height: 1.7; opacity: 0.9;">Transformer les expériences en compétences concrètes avec la méthode STAR.</p>
-                    </div>
-                </div>
-                <!-- Étape 4 -->
-                <div style="background: var(--blanc); border-radius: 30px; padding: 35px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); display: flex; align-items: center; gap: 30px; border-left: 6px solid var(--turquoise);">
-                    <div style="flex-shrink: 0; width: 80px; height: 80px; background: linear-gradient(135deg, var(--turquoise), var(--bleu)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 900; color: var(--blanc);">4</div>
-                    <div style="flex: 1;">
-                        <h3 style="font-size: 26px; font-weight: 800; color: var(--turquoise); margin-bottom: 10px;">Préparer son entretien</h3>
-                        <p style="font-size: 16px; line-height: 1.7; opacity: 0.9;">S'entraîner à se présenter et à répondre aux questions en entretien.</p>
-                    </div>
-                </div>
-                <!-- Étape 5 -->
-                <div style="background: var(--blanc); border-radius: 30px; padding: 35px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); display: flex; align-items: center; gap: 30px; border-left: 6px solid var(--violet);">
-                    <div style="flex-shrink: 0; width: 80px; height: 80px; background: linear-gradient(135deg, var(--violet), #9C27B0); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 900; color: var(--blanc);">5</div>
-                    <div style="flex: 1;">
-                        <h3 style="font-size: 26px; font-weight: 800; color: var(--violet); margin-bottom: 10px;">Passer à l'action</h3>
-                        <p style="font-size: 16px; line-height: 1.7; opacity: 0.9;">Se fixer des objectifs clairs et prioriser les démarches pour être plus efficace.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- BLOC 1 : Pourquoi on travaille -->
-        <div class="bloc">
-            <div class="puzzle-deco">
-                <div class="puzzle-piece piece-1"></div>
-                <div class="puzzle-piece piece-2"></div>
-                <div class="puzzle-piece piece-3"></div>
-                <div class="puzzle-piece piece-4"></div>
-            </div>
-            <div class="bloc-header">
-                <div class="bloc-number">1</div>
-                <h2>Pourquoi on travaille ?</h2>
-            </div>
-            <div class="pillars">
-                <div class="pillar">
-                    <div class="pillar-icon">💰</div>
-                    <h3>Argent</h3>
-                    <p>Gagner de l'argent pour vivre, se loger, manger, sortir. C'est la base.</p>
-                </div>
-                <div class="pillar">
-                    <div class="pillar-icon">🧭</div>
-                    <h3>Autonomie</h3>
-                    <p>Ne plus dépendre de personne. Choisir sa vie, ses projets.</p>
-                </div>
-                <div class="pillar">
-                    <div class="pillar-icon">⭐</div>
-                    <h3>Reconnaissance</h3>
-                    <p>Se sentir utile, valorisé. Trouver sa place dans la société.</p>
-                </div>
-                <div class="pillar">
-                    <div class="pillar-icon">🚀</div>
-                    <h3>Projet de vie</h3>
-                    <p>Construire quelque chose, avancer vers un objectif qui compte pour toi.</p>
-                </div>
-            </div>
-            <p class="key-message">👉 Travailler sert à plusieurs choses en même temps.</p>
-        </div>
-
-        <!-- BLOC 2 : Comment je fonctionne -->
-        <div class="bloc">
-            <div class="bloc-header">
-                <div class="bloc-number">2</div>
-                <h2>Comment je fonctionne face au travail ?</h2>
-            </div>
-            <p class="intro-text" style="text-align: center;">
-                La personnalité est l'ensemble de vos tendances comportementales. C’est votre manière habituelle de réagir, de communiquer et de traiter l'information. Faire un travail en phase avec son tempérament réduit la fatigue nerveuse. L'objectif est de pouvoir utiliser ses traits naturels (ex: rigueur, réactivité) comme des compétences car un poste qui contredit votre personnalité mène souvent à l'épuisement.
-            </p>
-            <div class="bubbles-container">
-                <div class="bubble">💪 Ma motivation</div>
-                <div class="bubble">🚧 Mes freins</div>
-                <div class="bubble">⚡ Réaction sous pression</div>
-                <div class="bubble">📋 Rapport au cadre</div>
-                <div class="bubble">👤 Rapport à l'autorité</div>
-            </div>
-            <div style="background: linear-gradient(135deg, rgba(77, 212, 212, 0.1), rgba(33, 150, 243, 0.1)); border-radius: 25px; padding: 30px; margin-top: 40px; margin-bottom: 40px;">
-                <h3 style="font-size: 20px; font-weight: 800; margin-bottom: 15px; color: var(--noir);">
-                    Exemples concrets :
-                </h3>
-                <ul style="list-style: none; padding: 0;">
-                    <li style="padding: 10px 0; padding-left: 30px; position: relative;">
-                        <span style="position: absolute; left: 0; color: var(--turquoise); font-weight: 900;">→</span>
-                        Difficulté avec les ordres directs ? → Éviter les postes trop hiérarchiques
-                    </li>
-                    <li style="padding: 10px 0; padding-left: 30px; position: relative;">
-                        <span style="position: absolute; left: 0; color: var(--turquoise); font-weight: 900;">→</span>
-                        Besoin de liberté ? → Viser des métiers créatifs ou en autonomie
-                    </li>
-                    <li style="padding: 10px 0; padding-left: 30px; position: relative;">
-                        <span style="position: absolute; left: 0; color: var(--turquoise); font-weight: 900;">→</span>
-                        Stress facile ? → Chercher un cadre rassurant avec du soutien
-                    </li>
-                </ul>
-            </div>
-
-            <p class="intro-text" style="text-align: center;">
-                Pour analyser ce fonctionnement, nous allons utiliser le MBTI. C'est l'outil de référence dans le monde de l'entreprise. Il ne mesure pas votre intelligence, mais vos préférences.
-            </p>
-
-            <div style="text-align: center; margin-top: 20px; margin-bottom: 30px;">
-                <a href="https://mlpb-tools.github.io/16perso/" target="_blank" class="btn btn-primary">
-                    🧠 Faire le test des 16 personnalités
-                </a>
-            </div>
-
-            <p class="intro-text" style="text-align: center; font-weight: 600; color: var(--rouge);">
-                Maintenant on va se pencher sur vos valeurs. Passer du "Comment" au "Pourquoi". La Personnalité définit vos réflexes (Votre capacité à faire). Les Valeurs définissent vos priorités (Votre motivation à faire).
-            </p>
-        </div>
-
-        <!-- BLOC 3 : Mes valeurs -->
-        <div class="bloc">
-            <div class="bloc-header">
-                <div class="bloc-number">3</div>
-                <h2>Mes valeurs au travail</h2>
-            </div>
-
-            <div style="background: var(--gris-clair); border-radius: 20px; padding: 25px; margin-bottom: 30px;">
-                <h3 style="font-size: 20px; font-weight: 800; color: var(--noir); margin-bottom: 15px;">Pourquoi identifier ses valeurs ?</h3>
-                <ul style="list-style: none; padding: 0;">
-                    <li style="margin-bottom: 10px;"><strong>Le Sens :</strong> Travailler pour un objectif qui vous semble important.</li>
-                    <li style="margin-bottom: 10px;"><strong>L'Éthique :</strong> Se sentir en accord avec les pratiques de l'entreprise (ex: respect, solidarité, autonomie).</li>
-                    <li><strong>Le Choix :</strong> Les valeurs servent de critères pour valider ou refuser une opportunité.</li>
-                </ul>
-            </div>
-
-            <div class="values-grid">
-                <div class="value-item"><div class="value-icon">🤝</div><div class="value-name">Respect</div></div>
-                <div class="value-item"><div class="value-icon">😊</div><div class="value-name">Ambiance</div></div>
-                <div class="value-item"><div class="value-icon">🛡️</div><div class="value-name">Sécurité</div></div>
-                <div class="value-item"><div class="value-icon">🕊️</div><div class="value-name">Liberté</div></div>
-                <div class="value-item"><div class="value-icon">💫</div><div class="value-name">Utilité</div></div>
-                <div class="value-item"><div class="value-icon">⚖️</div><div class="value-name">Justice</div></div>
-                <div class="value-item"><div class="value-icon">🎨</div><div class="value-name">Créativité</div></div>
-            </div>
-            
-            <div style="text-align: center; margin-top: 40px; margin-bottom: 30px;">
-                <a href="https://mlpb-tools.github.io/mes-valeurs/" target="_blank" class="btn btn-primary">
-                    ⭐ Identifier mes valeurs
-                </a>
-            </div>
-
-            <p class="key-message" style="text-align: center; max-width: 800px; margin: 0 auto;">
-                On a vu votre personnalité (Comment) et vos valeurs (Pourquoi). Maintenant, on va voir vos outils (Avec quoi). » Vos Valeurs créent vos Compétences.
-            </p>
-        </div>
-
-        <!-- BLOC 4 : Mes compétences -->
-        <div class="bloc">
-            <div class="bloc-header">
-                <div class="bloc-number">4</div>
-                <h2>Mes compétences existent déjà</h2>
-            </div>
-
-            <div style="background: linear-gradient(135deg, rgba(255, 159, 28, 0.1), rgba(255, 209, 102, 0.15)); border-radius: 20px; padding: 25px; margin-bottom: 30px;">
-                <h3 style="font-size: 20px; font-weight: 800; color: var(--orange); margin-bottom: 15px;">C'est quoi une compétence ?</h3>
-                <p style="margin-bottom: 15px;">Une compétence, c’est savoir mobiliser une ressource pour résoudre un problème. Elle se décline en deux facettes :</p>
-                <ul style="list-style: none; padding: 0;">
-                    <li style="margin-bottom: 10px;">🛠️ <strong>Le Savoir-faire :</strong> Ce que vous avez appris (ex: réparer un vélo, utiliser un logiciel, cuisiner).</li>
-                    <li style="margin-bottom: 15px;">🧠 <strong>Le Savoir-être :</strong> Votre manière d'agir (ex: ponctualité, esprit d'équipe, débrouillardise).</li>
-                </ul>
-                <p><strong>Idée reçue :</strong> "Je n'ai pas de diplôme, donc je n'ai pas de compétences." C'est faux. Vous possédez déjà des dizaines de compétences de votre expérience de la vie de tous les jours.</p>
-            </div>
-
-            <div class="sources-grid">
-                <div class="source-card"><div class="source-icon">🏠</div><div class="source-label">Vie perso</div></div>
-                <div class="source-card"><div class="source-icon">🎮</div><div class="source-label">Loisirs</div></div>
-                <div class="source-card"><div class="source-icon">💼</div><div class="source-label">Jobs courts</div></div>
-                <div class="source-card"><div class="source-icon">💪</div><div class="source-label">Galères</div></div>
-                <div class="source-card"><div class="source-icon">🤲</div><div class="source-label">Bénévolat</div></div>
-            </div>
-            <p class="key-message">👉 Tout peut devenir compétence.</p>
-            <div style="text-align: center; margin-top: 40px;">
-                <a href="https://mlpb-tools.github.io/mes-competences/" target="_blank" class="btn btn-primary">
-                    🎯 Identifier mes compétences
-                </a>
-            </div>
-        </div>
-
-        <!-- BLOC 5 : Me rendre lisible -->
-        <div class="bloc">
-            <div class="bloc-header">
-                <div class="bloc-number">5</div>
-                <h2>Me rendre lisible pour un employeur</h2>
-            </div>
-            
-            <p class="intro-text" style="text-align: center;">
-                Maintenant vous savez comment vous fonctionnez, ce qui vous anime et ce que vous savez faire. La dernière étape, c'est de l'affirmer avec assurance. On va s'entraîner à transformer ces découvertes en messages clairs.
-            </p>
-
-            <div class="pitch-schema">
-                <div class="pitch-element"><h4>Qui je suis</h4><p>Le profil en 1 phrase</p></div>
-                <div class="arrow">→</div>
-                <div class="pitch-element"><h4>Ce que je sais faire</h4><p>2-3 compétences concrètes</p></div>
-                <div class="arrow">→</div>
-                <div class="pitch-element"><h4>Ce que je cherche</h4><p>Type de poste, secteur</p></div>
-            </div>
-
-            <div style="background: linear-gradient(135deg, rgba(77, 212, 212, 0.1), rgba(33, 150, 243, 0.1)); border-radius: 25px; padding: 30px; margin-top: 40px; margin-bottom: 30px;">
-                <h3 style="font-size: 20px; font-weight: 800; color: var(--noir); margin-bottom: 20px;">La méthode STAR</h3>
-                <p class="intro-text">Pour donner du poids à vos compétences et rassurer un recruteur, il ne suffit pas de dire « je sais faire ». On va utiliser une méthode simple, la méthode STAR qui permet d'organiser votre pensée pour être clair et précis.</p>
-                <ul style="list-style: none; padding: 0;">
-                    <li style="margin-bottom: 10px;"><strong>S comme Situation :</strong> Posez le décor. Où étiez-vous ? (Ex: en stage, dans une association, lors d'un projet de groupe).</li>
-                    <li style="margin-bottom: 10px;"><strong>T comme Tâche :</strong> Quel était votre rôle, le problème à résoudre ou l'objectif à atteindre ?</li>
-                    <li style="margin-bottom: 10px;"><strong>A comme Action :</strong> Qu'avez-vous fait précisément ? C'est la partie la plus importante. Utilisez le « Je ».</li>
-                    <li><strong>R comme Résultat :</strong> Quelle a été la conclusion ? Qu'avez-vous appris ou réussi ou retenu ?</li>
-                </ul>
-            </div>
-
-            <div style="text-align: center; margin-top: 40px;">
-                <a href="https://mlpb-tools.github.io/pitch-star/" target="_blank" class="btn btn-primary">
-                    🎤 Construire mon pitch STAR
-                </a>
-            </div>
-        </div>
-
-        <!-- BLOC 6 : Tenir dans la recherche -->
-        <div class="bloc">
-            <div class="bloc-header">
-                <div class="bloc-number">6</div>
-                <h2>Tenir dans la recherche</h2>
-            </div>
-            
-            <div style="text-align: center; margin-bottom: 30px;">
-                <p class="intro-text">
-                    Chercher sa voie, passer des entretiens et construire son avenir demande une énergie physique et mentale importante.
-                </p>
-                <p class="intro-text" style="color: var(--rouge); font-weight: 700;">
-                    Le risque : S'épuiser, perdre sa motivation ou perdre confiance. Prendre soin de soi n'est pas un luxe, c'est une condition de réussite.
-                </p>
-            </div>
-
-            <h3 style="font-size: 24px; font-weight: 800; margin: 40px 0 20px; color: var(--rouge);">⚠️ Signaux d'alerte</h3>
-            <div class="signals">
-                <div class="signal-item"><div class="signal-icon">😴</div><div class="signal-label">Fatigue</div></div>
-                <div class="signal-item"><div class="signal-icon">😞</div><div class="signal-label">Découragement</div></div>
-                <div class="signal-item"><div class="signal-icon">😰</div><div class="signal-label">Stress</div></div>
-                <div class="signal-item"><div class="signal-icon">🏝️</div><div class="signal-label">Isolement</div></div>
-            </div>
-            <h3 style="font-size: 24px; font-weight: 800; margin: 40px 0 20px; color: var(--vert);">✅ Solutions simples</h3>
-            <div class="solutions">
-                <div class="solution-card"><div class="solution-icon">🤝</div><div class="solution-text">Demander de l'aide</div></div>
-                <div class="solution-card"><div class="solution-icon">⏱️</div><div class="solution-text">Rythme réaliste</div></div>
-                <div class="solution-card"><div class="solution-icon">☕</div><div class="solution-text">Prendre des pauses</div></div>
-                <div class="solution-card"><div class="solution-icon">🎯</div><div class="solution-text">Accompagnement pro</div></div>
-            </div>
-        </div>
-
-        <!-- BLOC SANTÉ ET BIEN-ÊTRE : Le jeu de l'énergie INTEGRÉ -->
-        <div class="bloc" style="background: linear-gradient(135deg, rgba(139, 71, 137, 0.05), rgba(255, 92, 141, 0.05));">
-            <div class="bloc-header">
-                <div class="bloc-number">💚</div>
-                <h2>Mon Plan d'Action Santé & Bien-être</h2>
-                <p style="font-size: 18px; opacity: 0.8;">
-                    Tenir dans la recherche, c'est aussi prendre soin de soi.
-                </p>
-            </div>
-
-            <h3 style="font-size: 28px; font-weight: 800; color: var(--violet); margin: 40px 0 20px; text-align: center;">
-                Étape 1 : Faire le point sur la situation
-            </h3>
-
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 25px; margin: 30px 0;">
-                <div style="background: linear-gradient(135deg, rgba(33, 150, 243, 0.1), rgba(77, 212, 212, 0.15)); border-radius: 25px; padding: 30px; text-align: center; border: 3px solid var(--bleu);">
-                    <div style="font-size: 48px; margin-bottom: 15px;">🧠</div>
-                    <h4 style="font-size: 18px; font-weight: 800; color: var(--noir); margin-bottom: 10px;">Physique</h4>
-                    <p style="font-size: 14px; opacity: 0.8;">Fatigue, douleurs, troubles du sommeil</p>
-                </div>
-                <div style="background: linear-gradient(135deg, rgba(255, 92, 141, 0.1), rgba(255, 23, 102, 0.15)); border-radius: 25px; padding: 30px; text-align: center; border: 3px solid var(--rose);">
-                    <div style="font-size: 48px; margin-bottom: 15px;">😊</div>
-                    <h4 style="font-size: 18px; font-weight: 800; color: var(--noir); margin-bottom: 10px;">Émotionnel</h4>
-                    <p style="font-size: 14px; opacity: 0.8;">Tristesse, irritabilité, anxiété</p>
-                </div>
-                <div style="background: linear-gradient(135deg, rgba(255, 159, 28, 0.1), rgba(255, 209, 102, 0.15)); border-radius: 25px; padding: 30px; text-align: center; border: 3px solid var(--orange);">
-                    <div style="font-size: 48px; margin-bottom: 15px;">🚶</div>
-                    <h4 style="font-size: 18px; font-weight: 800; color: var(--noir); margin-bottom: 10px;">Comportemental</h4>
-                    <p style="font-size: 14px; opacity: 0.8;">Isolement, procrastination</p>
-                </div>
-                <div style="background: linear-gradient(135deg, rgba(124, 179, 66, 0.1), rgba(139, 195, 74, 0.15)); border-radius: 25px; padding: 30px; text-align: center; border: 3px solid var(--vert);">
-                    <div style="font-size: 48px; margin-bottom: 15px;">💭</div>
-                    <h4 style="font-size: 18px; font-weight: 800; color: var(--noir); margin-bottom: 10px;">Cognitif</h4>
-                    <p style="font-size: 14px; opacity: 0.8;">Concentration, pensées négatives</p>
-                </div>
-            </div>
-
-            <h3 style="font-size: 28px; font-weight: 800; color: var(--violet); margin: 50px 0 20px; text-align: center;">
-                Ma balance énergétique
-            </h3>
-
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin: 40px 0;">
-                <div style="background: linear-gradient(135deg, rgba(124, 179, 66, 0.1), rgba(139, 195, 74, 0.15)); border-radius: 30px; padding: 35px;">
-                    <h4 style="font-size: 22px; font-weight: 800; color: var(--vert); margin-bottom: 20px; text-align: center;">🌱 Ressources</h4>
-                    <div style="text-align:center; font-size:14px;">Ce qui me recharge (Amis, Sport, Nature...)</div>
-                </div>
-                <div style="background: linear-gradient(135deg, rgba(255, 23, 102, 0.1), rgba(255, 92, 141, 0.15)); border-radius: 30px; padding: 35px;">
-                    <h4 style="font-size: 22px; font-weight: 800; color: var(--rouge); margin-bottom: 20px; text-align: center;">⚡ Stresseurs</h4>
-                    <div style="text-align:center; font-size:14px;">Ce qui me vide (Conflits, Écrans, Admin...)</div>
-                </div>
-            </div>
-
-            <!-- GESTION DE L'ENERGIE -->
-            <div style="text-align: center; margin: 50px 0; padding: 30px; background: rgba(255,255,255,0.8); border-radius: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.05);">
-                <h4 style="font-size: 22px; font-weight: 800; color: var(--orange); margin-bottom: 15px;">
-                    📊 Évaluer votre équilibre
-                </h4>
-                <p style="margin-bottom: 25px; max-width: 600px; margin-left: auto; margin-right: auto;">
-                    Découvrez vos propres ressources et stresseurs grâce à cet outil interactif.
-                </p>
-                <a href="https://mlpb-tools.github.io/Energie/" target="_blank" class="btn btn-primary">
-                    Accéder à l'outil Gestion de l'Énergie
-                </a>
-            </div>
-
-            <h3 style="font-size: 28px; font-weight: 800; color: var(--violet); margin: 50px 0 20px; text-align: center;">
-                Étape 2 : Identifier ses outils et ses forces
-            </h3>
-            <div style="background: linear-gradient(135deg, rgba(139, 71, 137, 0.1), rgba(156, 39, 176, 0.15)); border-radius: 30px; padding: 40px; margin: 30px 0;">
-                <div style="display: grid; gap: 20px;">
-                    <div style="background: var(--blanc); border-radius: 20px; padding: 25px; border-left: 5px solid var(--turquoise);">
-                        <h5 style="font-size: 18px; font-weight: 700; color: var(--turquoise); margin-bottom: 12px;">🧘 Régulation par le CORPS</h5>
-                        <p style="font-size: 15px;">Respiration, marche, étirements, sommeil</p>
-                    </div>
-                    <div style="background: var(--blanc); border-radius: 20px; padding: 25px; border-left: 5px solid var(--vert);">
-                        <h5 style="font-size: 18px; font-weight: 700; color: var(--vert); margin-bottom: 12px;">👥 Régulation par le LIEN</h5>
-                        <p style="font-size: 15px;">Parler à quelqu'un de confiance</p>
-                    </div>
-                    <div style="background: var(--blanc); border-radius: 20px; padding: 25px; border-left: 5px solid var(--orange);">
-                        <h5 style="font-size: 18px; font-weight: 700; color: var(--orange); margin-bottom: 12px;">🎨 Régulation par l'EXPRESSION</h5>
-                        <p style="font-size: 15px;">Écriture, dessin, musique</p>
-                    </div>
-                </div>
-            </div>
-            <!-- Fin de la section Bien-être -->
-        </div>
-
-        <!-- BLOC 7 : Réalité du travail -->
-        <div class="bloc">
-            <div class="bloc-header">
-                <div class="bloc-number">7</div>
-                <h2>La réalité du travail au quotidien</h2>
-            </div>
-
-            <div style="text-align: center; margin-bottom: 30px;">
-                <p class="intro-text">
-                    C'est tout ce qu'il y a autour et qui pèse sur votre journée. Le temps de trajet et le mode de transport. Les horaires (coupures, travail de nuit, week-end). L'environnement (bruit, froid, station debout, bureau partagé).
-                </p>
-                <p class="intro-text" style="font-weight: 600;">
-                    On peut aimer son métier mais quitter son job à cause des conditions quotidiennes. Anticiper, c’est s’assurer de tenir sur la durée.
-                </p>
-            </div>
-
-            <div class="checklist">
-                <div class="checklist-item"><div class="checkbox"></div><div class="checklist-text">🚇 Transport : comment aller au travail ? Coût ?</div></div>
-                <div class="checklist-item"><div class="checkbox"></div><div class="checklist-text">⏰ Horaires : matinal ou soir ? Fixes ou variables ?</div></div>
-                <div class="checklist-item"><div class="checkbox"></div><div class="checklist-text">😴 Fatigue : debout ou assis ?</div></div>
-                <div class="checklist-item"><div class="checkbox"></div><div class="checklist-text">🍽️ Repas : où manger ? Panier repas ?</div></div>
-                <div class="checklist-item"><div class="checkbox"></div><div class="checklist-text">🏥 Santé : job physiquement exigeant ?</div></div>
-            </div>
-            <p class="key-message">👉 Anticiper = éviter la rupture.</p>
-        </div>
-
-        <!-- BLOC 8 : Objectifs réalistes -->
-        <div class="bloc">
-            <div class="bloc-header">
-                <div class="bloc-number">8</div>
-                <h2>Objectifs réalistes : prioriser !</h2>
-            </div>
-            
-            <div style="margin-bottom: 30px;">
-                <p class="intro-text">
-                    L'objectif c'est passer du souhait à l'action. Un souhait, c'est flou : « Je voudrais trouver un travail. » Un objectif, c’est précis : « Je vais contacter trois entreprises d'ici vendredi 16h. » Un objectif a une échéance, un résultat mesurable et dépend de votre action directe.
-                </p>
-                <p class="intro-text">
-                    <strong>Le but :</strong> Ne plus attendre que les choses arrivent, mais déclencher des résultats. Attention, vous ne pouvez pas tout faire en même temps. Prioriser, c'est décider de ce qui passe en premier. » L'Urgent vs L'Important : Qu'est-ce qui doit être fait tout de suite ?
-                </p>
-            </div>
-
-            <div class="priority-grid">
-                <div class="priority-card priority-a">
-                    <div class="priority-icon">🔴</div>
-                    <div class="priority-label">Prioritaire</div>
-                    <div class="priority-desc">Non négociable (Ex: Salaire min, transport)</div>
-                </div>
-                <div class="priority-card priority-b">
-                    <div class="priority-icon">🟠</div>
-                    <div class="priority-label">Important</div>
-                    <div class="priority-desc">Améliore la vie (Ex: Ambiance, horaires)</div>
-                </div>
-                <div class="priority-card priority-c">
-                    <div class="priority-icon">🟢</div>
-                    <div class="priority-label">Confort</div>
-                    <div class="priority-desc">Le petit plus (Ex: Tickets resto)</div>
-                </div>
-            </div>
-            <div style="text-align: center; margin-top: 40px;">
-                <a href="https://mlpb-tools.github.io/mes-objectifs/" target="_blank" class="btn btn-primary">
-                    🎯 Définir mes objectifs
-                </a>
-            </div>
-        </div>
-
-        <!-- NOUVEAU BLOC : SYNTHÈSE IKIGAI (Déplacé ici) -->
-        <div class="bloc">
-            <div class="bloc-header">
-                <div class="bloc-number">🧩</div>
-                <h2>Mon Ikigai Emploi</h2>
-                <div style="margin-top: 25px;">
-                    <p class="intro-text">
-                        On arrive au bout de la démarche. Vous avez toutes les pièces du puzzle : votre fonctionnement, vos valeurs, vos compétences, vos contraintes de réalité et vos objectifs. Maintenant, on va mettre tout ça dans l'ordre. Pour conclure cette démarche, il nous faut un outil capable de rassembler toutes les pièces du puzzle : votre personnalité, vos valeurs, vos compétences et vos objectifs. Cet outil, c’est l’Ikigai Emploi.
-                    </p>
-                    <p class="intro-text">
-                        C’est une méthode japonaise qui permet de trouver son « équilibre de vie » en croisant quatre domaines fondamentaux.
-                    </p>
-                    <p class="intro-text" style="font-weight: 600; color: var(--violet); margin-top: 20px;">
-                        Cet outil est conçu pour t'aider à définir ton Potentiel et tes Opportunités de manière concrète. Prends le temps de répondre à chaque section pour voir où elles se rejoignent au centre : ton point d'équilibre.
-                    </p>
-
-                    <!-- BLOCS D'INSTRUCTIONS IKIGAI -->
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 30px; text-align: left;">
-                        
-                        <!-- Bloc Valeurs -->
-                        <div style="background: rgba(255, 23, 102, 0.05); border-left: 5px solid var(--rouge); padding: 20px; border-radius: 10px;">
-                            <h4 style="color: var(--rouge); font-weight: 800; margin-bottom: 10px;">❤️ MES VALEURS (Ce que j'aime)</h4>
-                            <p style="font-size: 14px; margin-bottom: 10px;">Cette zone concerne ton Unicité et ce qui te définit vraiment.</p>
-                            <ul style="font-size: 14px; padding-left: 20px; opacity: 0.9;">
-                                <li>Identifie ce qui a du sens pour toi et ce qui te motive au quotidien.</li>
-                                <li>Appuie-toi sur ta connaissance de soi pour fixer tes objectifs personnels.</li>
-                            </ul>
-                        </div>
-
-                        <!-- Bloc Personnalité -->
-                        <div style="background: rgba(33, 150, 243, 0.05); border-left: 5px solid var(--bleu); padding: 20px; border-radius: 10px;">
-                            <h4 style="color: var(--bleu); font-weight: 800; margin-bottom: 10px;">🛠️ MA PERSONNALITÉ (Mon potentiel)</h4>
-                            <p style="font-size: 14px; margin-bottom: 10px;">Ici, on parle de tes Talents naturels et de ton fonctionnement interne.</p>
-                            <ul style="font-size: 14px; padding-left: 20px; opacity: 0.9;">
-                                <li>Note tes forces de résilience mentale et ta capacité de gestion du stress.</li>
-                                <li>Réfléchis à tes traits de caractère qui te rendent fort et te permettent d'avancer.</li>
-                            </ul>
-                        </div>
-
-                        <!-- Bloc Compétences -->
-                        <div style="background: rgba(255, 159, 28, 0.05); border-left: 5px solid var(--orange); padding: 20px; border-radius: 10px;">
-                            <h4 style="color: var(--orange); font-weight: 800; margin-bottom: 10px;">💼 MES COMPÉTENCES (Ce qui me rend utile)</h4>
-                            <p style="font-size: 14px; margin-bottom: 10px;">C'est le lien entre ce que tu sais faire et ce dont le monde a besoin.</p>
-                            <ul style="font-size: 14px; padding-left: 20px; opacity: 0.9;">
-                                <li>Liste les compétences que tu as développées pour améliorer ton image et ta capacité à convaincre.</li>
-                                <li>Identifie comment tes savoir-faire répondent à des besoins réels pour créer tes opportunités.</li>
-                            </ul>
-                        </div>
-
-                        <!-- Bloc Objectifs -->
-                        <div style="background: rgba(124, 179, 66, 0.05); border-left: 5px solid var(--vert); padding: 20px; border-radius: 10px;">
-                            <h4 style="color: var(--vert); font-weight: 800; margin-bottom: 10px;">🌱 MES OBJECTIFS (Pourquoi être payé)</h4>
-                            <p style="font-size: 14px; margin-bottom: 10px;">Cette partie définit la viabilité de ton projet professionnel.</p>
-                            <ul style="font-size: 14px; padding-left: 20px; opacity: 0.9;">
-                                <li>Détermine précisément pour quel salaire tu souhaites être rémunéré.</li>
-                                <li>Cible les qualités et compétences spécifiques pour lesquelles un employeur sera prêt à te payer.</li>
-                            </ul>
-                        </div>
-
-                        <!-- Bloc Équilibre -->
-                        <div style="background: linear-gradient(135deg, rgba(139, 71, 137, 0.1), rgba(156, 39, 176, 0.1)); border: 2px solid var(--violet); padding: 20px; border-radius: 15px; grid-column: 1 / -1;">
-                            <h4 style="color: var(--violet); font-weight: 800; margin-bottom: 10px; text-align: center;">⚖️ Le Socle : MON ÉQUILIBRE</h4>
-                            <p style="font-size: 15px; margin-bottom: 15px; text-align: center;">Rien ne tient sans une base solide. Ton projet ne peut réussir que si tu préserves ton Bien-être physique et mental.</p>
-                            <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;">
-                                <div style="flex: 1; min-width: 250px;">
-                                    <strong>Équilibre de vie :</strong> Assure-toi que ton projet respecte ton rythme et ta vie personnelle.
-                                </div>
-                                <div style="flex: 1; min-width: 250px;">
-                                    <strong>Ressources :</strong> Identifie et entretiens tes ressources mentales et physiques pour tenir sur la durée.
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
-            <!-- BOUTON ACTIVITÉ IKIGAI -->
-            <div style="text-align: center; margin-top: 40px; margin-bottom: 20px;">
-                <a href="https://mlpb-tools.github.io/ikigai/" target="_blank" class="btn btn-primary" style="font-size: 20px; padding: 22px 55px;">
-                    🧩 Lancer l'activité Ikigai
-                </a>
-                <p style="margin-top: 20px; font-size: 14px; opacity: 0.7;">
-                    Outil interactif pour construire votre projet professionnel
-                </p>
-            </div>
-            
-        </div>
-
-        <!-- Footer -->
-        <div style="text-align: center; padding: 40px 20px; opacity: 0.6; font-size: 14px;">
-            <p>Développé dans le cadre du projet Life Skills 4 Youth</p>
-            <p>Co-financé par l'Union Européenne</p>
-        </div>
-    </div>
-
-    <!-- Contrôles de navigation webinaire -->
-    <div class="slide-controls">
-        <button class="slide-btn" id="prevSlide" onclick="previousSlide()">←</button>
-        <span class="slide-counter" id="slideCounter">Section 1 / 10</span>
-        <button class="slide-btn" id="nextSlide" onclick="nextSlide()">→</button>
-        <button class="fullscreen-btn" onclick="toggleFullscreen()">📺 Plein écran</button>
-    </div>
-
-    <script>
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.bloc, .hero');
-        const totalSlides = slides.length;
-
-        function updateSlideCounter() {
-            document.getElementById('slideCounter').textContent = `Section ${currentSlide + 1} / ${totalSlides}`;
-            document.getElementById('prevSlide').disabled = currentSlide === 0;
-            document.getElementById('nextSlide').disabled = currentSlide === totalSlides - 1;
-        }
-
-        function scrollToSlide(index) {
-            if (index >= 0 && index < totalSlides) {
-                slides[index].scrollIntoView({ behavior: 'smooth', block: 'start' });
-                currentSlide = index;
-                updateSlideCounter();
-            }
-        }
-
-        function nextSlide() { scrollToSlide(currentSlide + 1); }
-        function previousSlide() { scrollToSlide(currentSlide - 1); }
+  <script>
+    // DONNÉES DES CARTES
+    const CARDS_DATA = {
+      intro: {
+        number: 1,
+        title: "INTRODUCTION",
+        color: "var(--mint)",
+        desc: `<strong>Construire son projet professionnel par les Life Skills</strong><br><br>
+        Cet outil s'inscrit dans un parcours structuré de développement des Life Skills pour jeunes en insertion. Il articule cinq modules complémentaires qui dessinent progressivement votre <strong>portrait professionnel unique</strong> :<br><br>
+        • <strong>Personnalité (16 Profils)</strong> → Votre fonctionnement naturel<br>
+        • <strong>Valeurs</strong> → Vos moteurs de motivation<br>
+        • <strong>Objectifs ABC</strong> → Vos priorités actionnables<br>
+        • <strong>Compétences situationnelles</strong> → Vos forces prouvées<br>
+        • <strong>Énergie</strong> → Vos moments de performance optimale<br>
+        • <strong>S'affirmer</strong> → Votre communication authentique<br>
+        • <strong>Sortie zone de confort</strong> → Votre capacité d'évolution<br><br>
+        <strong>Logique progressive :</strong> La personnalité éclaire le <em>comment</em>, les valeurs le <em>pourquoi</em>, les objectifs le <em>quoi</em>, les compétences le <em>ce que je maîtrise</em>, l'énergie le <em>quand je réussis</em>, l'affirmation le <em>comment je le transmets</em>, et la sortie de zone de confort le <em>comment je grandis</em>.<br><br>
+        <strong>Synthèse Ikigai :</strong> L'intersection de ces dimensions révèle votre <strong>zone d'excellence professionnelle</strong> – là où vos talents naturels, motivations profondes, compétences validées et énergie optimale rencontrent les besoins du marché du travail.`,
+        link: "#", 
+        btnText: "" 
+      },
+      perso: {
+        number: 2,
+        title: "MA PERSONNALITÉ",
+        color: "var(--red)",
+        desc: `La personnalité désigne l'ensemble de vos tendances comportementales stables. C'est votre manière habituelle de réagir face aux situations professionnelles, de communiquer avec les équipes ou les employeurs, et de traiter l'information.<br><br>
+        Nous allons découvrir le <strong>test des 16 personnalités</strong> (inspiré du MBTI), un outil d'auto-connaissance qui identifie votre fonctionnement selon 4 dimensions :<br>
+        • Équipe ou Solo<br>
+        • Logique ou Social<br>
+        • Détails ou Global<br>
+        • Cadre ou Souplesse<br><br>
+        <em>Durée : 5 min. Chaque profil génère une carte de forces téléchargeable pour valoriser vos atouts.</em>`,
+        link: "https://mlpb-tools.github.io/16perso/",
+        btnText: "Faire le test"
+      },
+      valeurs: {
+        number: 3,
+        title: "VALEURS & OBJECTIFS",
+        color: "var(--yellow)",
+        desc: `Votre profil personnalité donne le <strong>“COMMENT”</strong> (votre mode opératoire naturel).<br>
+        Vos valeurs donnent le <strong>“POURQUOI”</strong> (vos moteurs profonds qui donnent sens à vos actions).<br><br>
+        Une valeur est un principe ou une conviction profonde qui guide vos comportements. C’est ce qui compte vraiment pour vous (ex. : respect, autonomie, solidarité).<br><br>
+        <strong>Rôle clé dans le travail :</strong><br>
+        • <strong>Motivation :</strong> Engagement total quand le poste correspond à vos valeurs<br>
+        • <strong>Satisfaction :</strong> Épanouissement dans un environnement qui les respecte<br>
+        • <strong>Choix métiers :</strong> Orientation vers des secteurs alignés<br><br>
+        <em>“Vos valeurs prioritaires orientent directement vos objectifs professionnels”</em><br><br>
+        <strong>Transition :</strong> Transformons maintenant ces valeurs en actions concrètes.`,
+        link: "https://mlpb-tools.github.io/mes-valeurs/",
+        btnText: "Définir mes valeurs"
+      },
+      competences: {
+        number: 4,
+        title: "MES COMPÉTENCES",
+        color: "var(--turq)",
+        desc: "Vie perso, loisirs, jobs courts, galères, bénévolat : tout peut devenir compétence.<br><br>Apprenez à identifier vos savoir-faire (Hard Skills) et savoir-être (Soft Skills) pour les valoriser auprès des recruteurs.",
+        link: "https://mlpb-tools.github.io/mes-competences/",
+        btnText: "Lister mes atouts"
+      },
+      energie: {
+        number: 5,
+        title: "MON ÉNERGIE",
+        color: "var(--orange)",
+        desc: "Chercher sa voie demande une énergie physique et mentale importante. Comprendre vos rythmes, ce qui vous donne de l'énergie et ce qui vous en coûte est essentiel pour réussir sur la durée.",
+        link: "https://mlpb-tools.github.io/Energie/",
+        btnText: "Analyser mon rythme"
+      },
+      communiquer: {
+        number: 6,
+        title: "COMMUNIQUER",
+        color: "var(--yellow)",
+        desc: `<strong>AXE 6 : COMMUNIQUER</strong><br>
+        Dans cette étape clé de votre parcours Life Skills, trois activités interconnectées vous préparent à vous présenter avec impact et à expérimenter pour évoluer :<br><br>
         
-        function toggleFullscreen() {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(err => {
-                    console.log("Plein écran non autorisé : " + err.message);
-                    alert("Le mode plein écran n'est pas autorisé par le navigateur dans cette fenêtre.");
-                });
-            } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                }
-            }
+        <strong>1. S'Affirmer</strong> — <em>Votre prise de parole authentique</em><br>
+        • <strong>Objectif :</strong> Dire qui vous êtes, vos compétences, vos projets avec clarté et confiance (entretien stage, RDV ML, réseau pro).<br><br>
+        
+        <strong>2. Pitch Star</strong> — <em>Votre présentation percutante</em><br>
+        • <strong>Outil :</strong> Méthode STAR adaptée jeunes (Situation/Tâche/Action/Résultat)<br>
+        • <strong>Objectif :</strong> Structurer une réponse pour entretiens/rencontres pro<br>
+        • <strong>Résultat :</strong> Template rempli → prêt pour recruteurs<br><br>
+        
+        <strong>3. Zone de Confort</strong> — <em>Votre évolution par l'action</em><br>
+        • <strong>Outil :</strong> Cartographie 3 zones (confort/élasticité/panique) + défis gradués<br>
+        • <strong>Objectif :</strong> Identifier 3 actions concrètes pour progresser (nouveau mail, RDV inconnu, stage différent)<br><br>
+        
+        <div style="background:rgba(0,0,0,0.05); padding:10px; border-radius:8px; border-left:4px solid var(--ink); margin-top:10px;">
+        <strong>Logique pédagogique :</strong><br>
+        S'Affirmer (dire qui je suis) → Pitch Star (dire ce que j'ai fait) → Zone Confort (dire ce que je vais oser)
+        </div>`,
+        // NOUVEAU : MULTIPLES LIENS
+        multiLinks: [
+            { text: "1. S'Affirmer", url: "https://mlpb-tools.github.io/s-affirmer/" },
+            { text: "2. Pitch Star", url: "https://mlpb-tools.github.io/pitch-star/" },
+            { text: "3. Zone de Confort", url: "https://mlpb-tools.github.io/zone-de-confort/" }
+        ]
+      },
+      ikigai: {
+        number: "★",
+        title: "MON IKIGAI — SYNTHÈSE",
+        color: "var(--red)",
+        desc: "Là où talents naturels, motivations, compétences et énergie optimale rencontrent des opportunités concrètes.<br><br>Faites la synthèse de tout votre parcours pour identifier votre zone de génie.",
+        link: "https://mlpb-tools.github.io/ikigai/",
+        btnText: "Voir ma synthèse"
+      }
+    };
+
+    // GESTION MODALE
+    function openModal(cardId) {
+      const data = CARDS_DATA[cardId];
+      if (!data) return;
+
+      const modal = document.getElementById('modal-overlay');
+      const content = modal.querySelector('.modal-content');
+      const footer = modal.querySelector('.modal-footer');
+      
+      // Update Content
+      document.getElementById('modal-number').innerText = data.number;
+      document.getElementById('modal-number').style.background = data.color;
+      document.getElementById('modal-number').style.color = (data.color === 'var(--red)' || data.color === 'var(--turq)') ? 'white' : 'var(--ink)';
+      
+      document.getElementById('modal-title').innerText = data.title;
+      document.getElementById('modal-desc').innerHTML = data.desc;
+      
+      // Clear Footer
+      footer.innerHTML = '';
+
+      if (data.multiLinks) {
+          // Cas multi-boutons (Communique)
+          data.multiLinks.forEach(link => {
+              const btn = document.createElement('a');
+              btn.className = 'modal-btn';
+              btn.href = link.url;
+              btn.target = '_blank';
+              btn.innerText = link.text;
+              btn.style.background = data.color;
+              btn.style.color = (data.color === 'var(--yellow)' || data.color === 'var(--mint)') ? 'var(--ink)' : 'white';
+              btn.style.marginBottom = '10px';
+              footer.appendChild(btn);
+          });
+      } else if (data.link && data.link !== '#') {
+          // Cas simple (1 bouton)
+          const btn = document.createElement('a');
+          btn.className = 'modal-btn';
+          btn.href = data.link;
+          btn.target = '_blank';
+          btn.innerText = data.btnText;
+          btn.style.background = data.color;
+          btn.style.color = (data.color === 'var(--yellow)' || data.color === 'var(--mint)') ? 'var(--ink)' : 'white';
+          footer.appendChild(btn);
+      }
+      // Si aucun lien, le footer reste vide (masqué)
+
+      // Border color
+      content.style.borderColor = data.color;
+
+      // Show
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden'; // Prevent scrolling
+    }
+
+    function closeModal() {
+      document.getElementById('modal-overlay').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    // Wait for everything to load including external scripts
+    window.addEventListener('load', function() {
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
         }
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
-            else if (e.key === 'ArrowLeft') { e.preventDefault(); previousSlide(); }
-            else if (e.key === 'f' || e.key === 'F') { toggleFullscreen(); }
-        });
-
-        let scrollTimeout;
-        window.addEventListener('scroll', () => {
-            clearTimeout(scrollTimeout);
-            scrollTimeout = setTimeout(() => {
-                const scrollPosition = window.scrollY + window.innerHeight / 2;
-                slides.forEach((slide, index) => {
-                    const slideTop = slide.offsetTop;
-                    const slideBottom = slideTop + slide.offsetHeight;
-                    if (scrollPosition >= slideTop && scrollPosition < slideBottom) {
-                        currentSlide = index;
-                        updateSlideCounter();
-                    }
-                });
-            }, 100);
-        });
-        updateSlideCounter();
-    </script>
+    });
+  </script>
 </body>
 </html>
